@@ -5,13 +5,17 @@ import {
   faCartShopping,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-import { faStore } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faTruck,
+  faStore,
+  faPhone,
+  faPen,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
-// import { faHeart } from "@fortawesome/free-solid-svg-icons";
+
 const Header = () => {
   return (
     <>
