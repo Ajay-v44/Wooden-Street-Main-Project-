@@ -15,7 +15,7 @@ import {
 
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <>
@@ -60,11 +60,13 @@ const Header = () => {
         <div className="flex justify-between"></div>
       </div>
       <div className="md:mx-40 mx-0 flex justify-between items-center flex-col md:flex-row">
-        <img
-          src="/images/Wooden_Street-Logo.wine.png"
-          alt="logo"
-          width={"250px"}
-        />
+        <Link to={"/"}>
+          <img
+            src="/images/Wooden_Street-Logo.wine.png"
+            alt="logo"
+            width={"250px"}
+          />
+        </Link>
 
         <form>
           <div className="flex">
@@ -117,24 +119,24 @@ const Header = () => {
 
             <p className="">Stores</p>
           </div>
-          <div className="flex flex-col justify-center items-center">
+          <Link to={'/userprofile'} className="flex flex-col justify-center items-center">
             <FontAwesomeIcon icon={faUser} className="text-orange-300" />
 
             <p className="text-base">Profile</p>
-          </div>
-          <div className="flex flex-col justify-center items-center">
+          </Link>
+          <Link to={'/whishlist'} className="flex flex-col justify-center items-center">
             <FontAwesomeIcon icon={faHeart} className="text-orange-300" />
 
             <p className="text-base">Whishlist (0)</p>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <FontAwesomeIcon
+          </Link>
+          < Link to={'/cart'} className="flex flex-col justify-center items-center">
+           <FontAwesomeIcon
               icon={faCartShopping}
               className="text-orange-300"
             />
 
             <p className="text-base">Cart (0)</p>
-          </div>
+          </Link>
         </div>
       </div>
       <div className="md:mx-40 mx-0 flex justify-between items-center text-gray-500 ">

@@ -9,6 +9,7 @@ import {
   faTruck,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { faFacebook, faInstagram, faXTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 const Footer = () => {
   return (
     <div className="mt-10">
@@ -194,34 +195,75 @@ const Footer = () => {
           </div>
         </div>
 
-       <div className="px-30 pt-10 pb-10">
-       <hr />
-<div className="flex justify-between pt-5">
-<div className="w-1/3">
-    <p><b>We Deliver in </b>:
-    Ahmedabad, Bangalore, Bhopal, Chandigarh, Chennai, Coimbatore, Faridabad, Ghaziabad, Goa, Gurgaon, Hyderabad, Indore, Jaipur and 
-    <span className="text-orange-300">More Cities</span>
-    </p>
-</div>
-<div>
-    <p>We accept All cards</p>
-    <FontAwesomeIcon
-            icon={faCreditCard}
-            className="text-orange-400 text-4xl pt-3"
-          />
-         
-             
-</div>
-<div>
-    <p>Download App</p>
-    <img src="/images/stores.jpeg" alt="" width={"50px"} className="cursor-pointer" />
-         
-             
-</div>
-</div>
-       </div>
+        <div className="px-30 pt-10 pb-10">
+          <hr />
+          <div className="flex justify-between pt-5">
+            <div className="w-2/3 md:w-1/3 ">
+              <p>
+                <b>We Deliver in </b>: Ahmedabad, Bangalore, Bhopal, Chandigarh,
+                Chennai, Coimbatore, Faridabad, Ghaziabad, Goa, Gurgaon,
+                Hyderabad, Indore, Jaipur and
+                <span className="text-orange-300">More Cities</span>
+              </p>
+            </div>
+            <div>
+              <p>We accept All cards</p>
+              <FontAwesomeIcon
+                icon={faCreditCard}
+                className="text-orange-400 text-4xl pt-3"
+              />
+            </div>
+            <div>
+              <p>Download App</p>
+              <img
+                src="/images/stores.jpeg"
+                alt=""
+                width={"50px"}
+                className="cursor-pointer"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between items-center flex-col md:flex-row">
+          <div className="flex">
+            <img
+              src="/images/Wooden_Street-Logo.wine.png"
+              alt="logo"
+              width={"180px"}
+            />
+            <p className="text-xs md:text-sm cursor-pointer pt-10 pl-20 ">
+              <p>
+                <span className="hover:text-orange-300"> Terms Of Use</span> |{" "}
+                <span className="hover:text-orange-300"> Security</span> |{" "}
+                <span className="hover:text-orange-300"> Return & Refund</span>{" "}
+                |<span className="hover:text-orange-300"> Payment Policy</span>{" "}
+                | <span className="hover:text-orange-300"> Gerevance Cell</span>{" "}
+                |
+              </p>
+              ©️ 2024 WoodenStreet . All rights reserved
+              {/* <p>Developed By :Ajay v</p> */}
+            </p>
+          </div>
+          <div className="flex justify-between gap-5 pt-5 md;pt-0">
+            <FontAwesomeIcon
+              icon={faFacebook}
+              className="text-blue-400 text-2xl cursor-pointer hover:text-blue-600"
+            />
+            <FontAwesomeIcon
+              icon={faInstagram}
+              className="text-pink-400 text-2xl cursor-pointer hover:text-pink-600"
+            />
+             <FontAwesomeIcon
+              icon={faXTwitter}
+              className="text-gray-600 text-2xl cursor-pointer hover:text-black"
+            />
+             <FontAwesomeIcon
+              icon={faYoutube}
+              className="text-red-500 text-2xl cursor-pointer hover:text-red-600"
+            />
+          </div>
+        </div>
       </div>
-
     </div>
   );
 };
