@@ -79,13 +79,13 @@ const Header = () => {
 
             <div
               id="dropdown"
-              className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+              // className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
             ></div>
             <div className="relative w-full">
               <input
                 type="search"
                 id="search-dropdown"
-                className="block p-2.5  z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 rounded-l-md"
+                className="block p-2.5  z-20 text-sm text-gray-100 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 rounded-l-md w-[15rem] md:w-[25rem]"
                 placeholder="Search Products..."
                 required
               />
@@ -119,18 +119,27 @@ const Header = () => {
 
             <p className="">Stores</p>
           </div>
-          <Link to={'/userprofile'} className="flex flex-col justify-center items-center">
+          <Link
+            to={"/userprofile"}
+            className="flex flex-col justify-center items-center"
+          >
             <FontAwesomeIcon icon={faUser} className="text-orange-300" />
 
             <p className="text-base">Profile</p>
           </Link>
-          <Link to={'/whishlist'} className="flex flex-col justify-center items-center">
+          <Link
+            to={"/whishlist"}
+            className="flex flex-col justify-center items-center"
+          >
             <FontAwesomeIcon icon={faHeart} className="text-orange-300" />
 
             <p className="text-base">Whishlist (0)</p>
           </Link>
-          < Link to={'/cart'} className="flex flex-col justify-center items-center">
-           <FontAwesomeIcon
+          <Link
+            to={"/cart"}
+            className="flex flex-col justify-center items-center"
+          >
+            <FontAwesomeIcon
               icon={faCartShopping}
               className="text-orange-300"
             />
