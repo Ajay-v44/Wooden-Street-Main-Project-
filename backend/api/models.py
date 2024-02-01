@@ -19,10 +19,11 @@ class Products(models.Model):
     material = models.CharField(max_length=50)
     warranty = models.CharField(max_length=50)
     brand = models.CharField(max_length=50)
-    rating = models.IntegerField()
+    rating = models.IntegerField(max=5)
     color = models.CharField(max_length=50)
 
     def discountedPrice(self):
+        print(int(self.price - (self.price * self.offer) / 100))
         return int(self.price - (self.price * self.offer) / 100)
 
     class Meta:

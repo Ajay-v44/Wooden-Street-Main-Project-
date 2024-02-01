@@ -12,7 +12,7 @@ from .serializers import *
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def products(request):
-    data = Products.objects.all()
+    data = Products.objects.all()    
     serializer = ProductSerializer(data, many=True)
     return Response(
         serializer.data
