@@ -1554,7 +1554,7 @@ const Homepage = () => {
                 data-carousel-item=""
               >
                 <div className="flex justify-center gap-10">
-                <div class="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
+                  <div class="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
                         class="object-cover rounded-md transition-transform transform-gpu hover:scale-105"

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,17 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$7!a!!6+y@i^lgo%m0e+e3=ae39l=n17@(z#zxfn29s++6^ea5'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +59,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 CORS_ALLOWED_ORIGINS = [
-   "http://localhost:5173/"
+   "http://localhost:5173"
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -83,10 +86,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'CLIENT': {
+            'host': 'mongodb+srv://vajay4834:1234@django-clusture.yxzxtju.mongodb.net/?retryWrites=true&w=majority',
+            'username':'vajay4834',
+            'password': '1234',
+            # 'authSource': 'your_auth_database',  # Remove this line if not used
+        },
+        'NAME': 'WoodenStore',# Change this to the new database name
+        # change in model also add djongo
     }
 }
 
@@ -126,6 +137,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/img/'
+STATICFILES_DIRS = [
+    BASE_DIR/'static'
+]
+MEDIA_ROOT = 'static/img'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
