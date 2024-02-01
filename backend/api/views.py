@@ -17,3 +17,18 @@ def products(request):
     return Response(
         serializer.data
     )
+@api_view(['GET'])
+def getdtproduct(request,id):
+    try:
+        data=Products.objects.filter(id=id)
+        serializer=ProductSerializer(data,many=True)
+        return Response(
+            serializer.data
+        )
+    except:
+        return Response(
+            {
+                'message':status.HTTP_404_NOT_FOUND,
+                
+            }
+        )
