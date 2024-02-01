@@ -22,8 +22,8 @@ class Products(models.Model):
     rating = models.IntegerField()
     color = models.CharField(max_length=50)
 
-    def dicountedPrice(self):
-        return int(self.price((self.price*self.offer)/100))
+    def discountedPrice(self):
+        return int(self.price - (self.price * self.offer) / 100)
 
     class Meta:
         db_table = 'Products'
