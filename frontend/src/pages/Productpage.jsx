@@ -86,7 +86,7 @@ const Productpage = () => {
         <div className=" pt-2 pb-3 bg-gradient-to-r from-white to-orange-100 ">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-5  px-5 items-center justify-center">
             {products?.map((product) => (
-              <Link
+              <Link key={product.id}
                 to={`/dtproduct/${product.id}`}
                 className="card bg-white shadow-lg rounded-md p-2 hover:-translate-y-1 hover:transition-all hover:shadow-2xl w-60 md:w-96  overflow-hidden h-auto"
               >

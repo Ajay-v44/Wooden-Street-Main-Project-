@@ -5,13 +5,23 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const DetaileProduct = () => {
-  const [loading, Setloading] = useState(false);
+const DetailProduct = () => {
+  const Calcprice = ({ prices, offers }) => {
+    const discountedPrice = parseInt(prices - (prices * offers) / 100);
+    return <>{discountedPrice}</>;
+  };
+
+  const url = "http://127.0.0.1:8000/";
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [selectedImage, setSelectedImage] = useState("");
+
   const { id } = useParams();
-  console.log(id);
+
   const RatingStars = ({ rating }) => {
     const stars = Array.from({ length: rating }, (_, index) => (
       <FontAwesomeIcon key={index} icon={faStar} className="text-orange-300" />
@@ -19,6 +29,26 @@ const DetaileProduct = () => {
 
     return <div>{stars}</div>;
   };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  useEffect(() => {
+    const getDetailProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/dtproducts/${id}/`);
+        setProducts(response.data);
+        setSelectedImage(response.data[0]?.img1); // Set the initial image
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDetailProduct();
+  }, [id]);
+
   return (
     <>
       {loading ? (
@@ -64,133 +94,145 @@ const DetaileProduct = () => {
           </button>
         </div>
       ) : (
-        <div className="pt-5 pb-5 px-10">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-5">
-            <div className="flex flex-col justify-center items-center">
-              <img
-                src="https://images.woodenstreet.de/image/cache/data%2Fbed-with-storage%2Fbrixton-sheesham-wood-bed-with-storage-drawers-king-size-honey-finish%2F1-810x702.jpg"
-                alt=""
-                className="w-96 md:w-[38rem]"
-              />
-              <div className="flex items-center justify-center gap-5 pt-3">
+        products.map((product) => (
+          <div key={product.id} className="pt-5 pb-5 px-10">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-5">
+              <div className="flex flex-col justify-center items-center">
                 <img
-                  src="https://images.woodenstreet.de/image/cache/data%2Fbed-with-storage%2Fbrixton-sheesham-wood-bed-with-storage-drawers-king-size-honey-finish%2F1-810x702.jpg"
+                  src={url + selectedImage}
                   alt=""
-                  className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
+                  className="w-96 md:w-[38rem]"
                 />
-                <img
-                  src="https://images.woodenstreet.de/image/cache/data%2Fbed-with-storage%2Fbrixton-sheesham-wood-bed-with-storage-drawers-king-size-honey-finish%2F1-810x702.jpg"
-                  alt=""
-                  className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
-                />
-                <img
-                  src="https://images.woodenstreet.de/image/cache/data%2Fbed-with-storage%2Fbrixton-sheesham-wood-bed-with-storage-drawers-king-size-honey-finish%2F1-810x702.jpg"
-                  alt=""
-                  className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
-                />
-                <img
-                  src="https://images.woodenstreet.de/image/cache/data%2Fbed-with-storage%2Fbrixton-sheesham-wood-bed-with-storage-drawers-king-size-honey-finish%2F1-810x702.jpg"
-                  alt=""
-                  className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
-                />
+                <div className="flex items-center justify-center gap-5 pt-3">
+                  <img
+                    src={url + product.img2}
+                    alt=""
+                    className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
+                    onClick={() => handleImageClick(product.img2)}
+                  />
+                  <img
+                    src={url + product.img3}
+                    alt=""
+                    className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
+                    onClick={() => handleImageClick(product.img3)}
+                  />
+                  <img
+                    src={url + product.img4}
+                    alt=""
+                    className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
+                    onClick={() => handleImageClick(product.img4)}
+                  />
+                  {product.img5 && (
+                    <img
+                      src={url + product.img5}
+                      alt=""
+                      className="w-32 md:w-40 hover:border-2 hover:border-orange-300 hover:rounded-md"
+                      onClick={() => handleImageClick(product.img5)}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-serif">
-                Brixton Sheesham Wood Bed With Box Storage
-              </h3>
-              <small>(Queen Size, Honey Finish)</small>
-              <p className="flex gap-2 items-center capitalize">
-                <RatingStars rating={4} />4
-                <span className="hover:text-orange-300 cursor-pointer">
-                  <FontAwesomeIcon icon={faHeart} className="pl-10 pr-3" />
-                  Add to whishlist
-                </span>
-              </p>
-
-              <p>
-                <span className="font-semibold">
-                  RS10000
-                  {/* <Calcprice prices={product.price} offers={product.offer} />{" "} */}
-                </span>
-                <span className="font-light text-gray-500 pl-2 text-base line-through">
-                  RS 200000
-                </span>
-                <span className="pl-3 text-lg text-green-300">20 % off</span>
-              </p>
-
-              <p className="w-96 text-justify">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam
-                quod laboriosam aliquid vel rem quam consectetur vitae dolore
-                dolores eaque illum autem adipisci, quos praesentium facere,
-                iure, blanditiis accusantium eum!
-              </p>
-
-              <p className="pt-3">
-                <span className="text-lg text-orange-300">Special offers</span>
-
-                <ul className="text-sm text-justify w-96 ">
-                  <li className="pt-3">
-                    <span className="text-green-400">{">"}</span>
-                    <span className="font-semibold"> Valentine Day Sale</span> -
-                    Apply Coupon LOVEIT10 & Get Upto 20% Off (price inclusive of
-                    discount){" "}
-                    <span className="text-blue-400 cursor-pointer">T&C</span>
-                  </li>
-                  <li className="pt-3">
-                    <span className="text-green-400">{">"}</span>
-                    <span className="font-semibold"> Store Discount</span> - Get
-                    upto 10% off on orders placed at your nearest experience
-                    stores{" "}
-                    <span className="text-blue-400 cursor-pointer">T&C</span>
-                  </li>
-                  <li className="pt-3">
-                    <span className="text-green-400">{">"}</span>
-                    <span className="font-semibold"> No Cost EMI</span> -
-                    Available on Net Cart Value of Rs 39,990 and Above!{" "}
-                    <span className="text-blue-400 cursor-pointer">T&C</span>
-                  </li>
-                  <li className="pt-3">
-                    <span className="text-green-400">{">"}</span>
-                    <span className="font-semibold"> Low Cost EMI </span> -
-                    Available on ICICI and HDFC for Net Cart Value of Rs 30,000
-                    and above for 6 months.{" "}
-                    <span className="text-blue-400 cursor-pointer">T&C</span>
-                  </li>
-                </ul>
-              </p>
-
-              <div className="flex justify-between items-center pt-5">
-                <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
-                  <FontAwesomeIcon icon={faCartShopping} className="pr-3" /> ADD
-                  TO CART
-                </button>
-                <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-300 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-500 ">
-                  <FontAwesomeIcon icon={faBoltLightning} className="pr-3" />
-                  BUY NOW
-                </button>
-              </div>
-
-              <div className="pt-3 capitalize ">
-                <p className="text-lg">Product Overview</p>
-                <hr />
-                <p className="text-gray-700 pt-3">
-                  Material <span className="pl-10">: shassam wood</span>
-                </p>
-                <p className="text-gray-700 pt-3">
-                  Waranty <span className="pl-10">: 6 months</span>
+              <div>
+                <h3 className="text-2xl font-serif">{product.pname}</h3>
+                <small>(Queen Size, Honey Finish)</small>
+                <p className="flex gap-2 items-center capitalize">
+                  <RatingStars rating={product.rating} />
+                  {product.rating}
+                  <span className="hover:text-orange-300 cursor-pointer">
+                    <FontAwesomeIcon icon={faHeart} className="pl-10 pr-3" />
+                    Add to whishlist
+                  </span>
                 </p>
 
-                <p className="text-gray-700 pt-3">
-                  brand <span className="pl-10">: thakkaliz</span>
+                <p>
+                  <span className="font-semibold">
+                    RS
+                    <Calcprice
+                      prices={product.price}
+                      offers={product.offer}
+                    />{" "}
+                  </span>
+                  <span className="font-light text-gray-500 pl-2 text-base line-through">
+                    RS {product.price}
+                  </span>
+                  <span className="pl-3 text-lg text-green-300">
+                    {product.offer} % off
+                  </span>
                 </p>
+
+                <p className="w-96 text-justify">{product.pdesc}</p>
+
+                <p className="pt-3">
+                  <span className="text-lg text-orange-300">
+                    Special offers
+                  </span>
+
+                  <ul className="text-sm text-justify w-96 ">
+                    <li className="pt-3">
+                      <span className="text-green-400">{">"}</span>
+                      <span className="font-semibold">
+                        {" "}
+                        Valentine Day Sale
+                      </span>{" "}
+                      - Apply Coupon LOVEIT10 & Get Upto 20% Off (price
+                      inclusive of discount){" "}
+                      <span className="text-blue-400 cursor-pointer">T&C</span>
+                    </li>
+                    <li className="pt-3">
+                      <span className="text-green-400">{">"}</span>
+                      <span className="font-semibold"> Store Discount</span> -
+                      Get upto 10% off on orders placed at your nearest
+                      experience stores{" "}
+                      <span className="text-blue-400 cursor-pointer">T&C</span>
+                    </li>
+                    <li className="pt-3">
+                      <span className="text-green-400">{">"}</span>
+                      <span className="font-semibold"> No Cost EMI</span> -
+                      Available on Net Cart Value of Rs 39,990 and Above!{" "}
+                      <span className="text-blue-400 cursor-pointer">T&C</span>
+                    </li>
+                    <li className="pt-3">
+                      <span className="text-green-400">{">"}</span>
+                      <span className="font-semibold"> Low Cost EMI </span> -
+                      Available on ICICI and HDFC for Net Cart Value of Rs
+                      30,000 and above for 6 months.{" "}
+                      <span className="text-blue-400 cursor-pointer">T&C</span>
+                    </li>
+                  </ul>
+                </p>
+
+                <div className="flex justify-between items-center pt-5">
+                  <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
+                    <FontAwesomeIcon icon={faCartShopping} className="pr-3" />{" "}
+                    ADD TO CART
+                  </button>
+                  <button className="p-2 ml-5 rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-300 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-500 ">
+                    <FontAwesomeIcon icon={faBoltLightning} className="pr-3" />
+                    BUY NOW
+                  </button>
+                </div>
+
+                <div className="pt-3 capitalize ">
+                  <p className="text-lg">Product Overview</p>
+                  <hr />
+                  <p className="text-gray-700 pt-3">
+                    Material <span className="pl-10">: {product.material}</span>
+                  </p>
+                  <p className="text-gray-700 pt-3">
+                    Waranty <span className="pl-10">: {product.warranty}</span>
+                  </p>
+
+                  <p className="text-gray-700 pt-3">
+                    brand <span className="pl-10">: {product.brand}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))
       )}
     </>
   );
 };
 
-export default DetaileProduct;
+export default DetailProduct;
