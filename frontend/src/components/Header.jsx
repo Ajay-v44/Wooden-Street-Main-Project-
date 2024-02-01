@@ -117,7 +117,7 @@ const Header = () => {
           <div className="flex flex-col justify-center items-center">
             <FontAwesomeIcon icon={faStore} className="text-orange-300" />
 
-            <p className="">Stores</p>
+            <Link to={'/product'} className="">Stores</Link>
           </div>
           <Link
             to={"/userprofile"}

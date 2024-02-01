@@ -14,7 +14,6 @@ from .serializers import *
 def products(request):
     data = Products.objects.all()
     serializer = ProductSerializer(data, many=True)
-    return Response({
-        "data":serializer.data
-    })
-
+    return Response(
+        serializer.data
+    )
