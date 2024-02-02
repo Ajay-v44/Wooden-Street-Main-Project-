@@ -114,26 +114,91 @@ const Header = () => {
           </div>
         </form>
         <div className="flex gap-5 font-sans mt-5 md:mt-0 ">
-          <div className="flex flex-col justify-center items-center">
-            <FontAwesomeIcon icon={faStore} className="text-orange-300" />
-
-            <Link to={'/product'} className="">Stores</Link>
-          </div>
           <Link
-            to={"/userprofile"}
+            to={"/product"}
             className="flex flex-col justify-center items-center"
           >
-            <FontAwesomeIcon icon={faUser} className="text-orange-300" />
+            <FontAwesomeIcon
+              icon={faStore}
+              className="text-orange-300 text-2xl hover:text-orange-500"
+            />
 
-            <p className="text-base">Profile</p>
+            <span className="text-xs hover:underline">Stores</span>
           </Link>
+
+          <button
+            id="dropdownDelayButton"
+            data-dropdown-toggle="dropdownDelay"
+            data-dropdown-delay="500"
+            data-dropdown-trigger="hover"
+            type="button"
+          >
+            <Link
+              to={"/userprofile"}
+              className="flex flex-col justify-center items-center"
+            >
+              <FontAwesomeIcon
+                icon={faUser}
+                className="text-orange-300 text-2xl hover:text-orange-500"
+              />
+
+              <span className="text-xs hover:underline">Profile</span>
+            </Link>
+          </button>
+
+          <div
+            id="dropdownDelay"
+            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+          >
+            <ul
+              className="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownDelayButton"
+            >
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <Link to={'/login'}
+                  
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to={'/register'}
+                  
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Register
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Sign out
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <Link
             to={"/whishlist"}
             className="flex flex-col justify-center items-center"
           >
-            <FontAwesomeIcon icon={faHeart} className="text-orange-300" />
+            <FontAwesomeIcon
+              icon={faHeart}
+              className="text-orange-300 text-2xl hover:text-orange-500"
+            />
 
-            <p className="text-base">Whishlist (0)</p>
+            <span className="text-xs hover:underline">Whishlist (0)</span>
           </Link>
           <Link
             to={"/cart"}
@@ -141,24 +206,50 @@ const Header = () => {
           >
             <FontAwesomeIcon
               icon={faCartShopping}
-              className="text-orange-300"
+              className="text-orange-300 text-2xl hover:text-orange-500"
             />
 
-            <p className="text-base">Cart (0)</p>
+            <span className="text-xs hover:underline">Cart (0)</span>
           </Link>
         </div>
       </div>
       <div className="md:mx-40 mx-0 flex justify-between items-center text-gray-500 ">
-        <h5 className="hover:text-orange-300 hover:underline ">Sofas</h5>
-        <h5 className="hover:text-orange-300 hover:underline ">Living</h5>
-        <h5 className="hover:text-orange-300 hover:underline ">Bedroom</h5>
-        <h5 className="hover:text-orange-300 hover:underline ">
+        <Link
+          className="hover:text-orange-300 hover:underline "
+          to={"products/sofa"}
+        >
+          Sofas
+        </Link>
+        <Link
+          className="hover:text-orange-300 hover:underline  "
+          to={"products/living"}
+        >
+          Living
+        </Link>
+        <Link
+          className="hover:text-orange-300 hover:underline "
+          to={"products/bed"}
+        >
+          Bedroom
+        </Link>
+        <Link
+          className="hover:text-orange-300 hover:underline "
+          to={"products/dining"}
+        >
           Dining & Kitchen
-        </h5>
-        <h5 className="hover:text-orange-300 hover:underline ">Storage</h5>
-        <h5 className="hover:text-orange-300 hover:underline ">
+        </Link>
+        <Link
+          className="hover:text-orange-300 hover:underline "
+          to={"products/storage"}
+        >
+          Storage
+        </Link>
+        <Link
+          className="hover:text-orange-300 hover:underline "
+          to={"products/study"}
+        >
           Study & Office
-        </h5>
+        </Link>
       </div>
       <hr className="mt-3 " />
     </>

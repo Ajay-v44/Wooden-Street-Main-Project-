@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTruck } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Productpage = () => {
+  const {id}=useParams()
+  console.log("data",id)
   const [loading, Setloading] = useState(false);
   const RatingStars = ({ rating }) => {
     const stars = Array.from({ length: rating }, (_, index) => (
@@ -25,15 +27,22 @@ const Productpage = () => {
     const fetchData = async () => {
       try {
         Setloading(true);
-        const response = await axios.get("/api/products/");
-        setProducts(response.data);
+        if (id){
+          const response = await axios.get(`/api/products/${id}/`);
+          setProducts(response.data);
+
+        }else{
+          const response = await axios.get("/api/products/");
+          setProducts(response.data);
+        }
+        
         Setloading(false);
       } catch (error) {
         console.error("Error:", error);
       }
     };
     fetchData();
-  }, []);
+  },[id]);
 
   return (
     <>
@@ -82,8 +91,8 @@ const Productpage = () => {
       ) : (
         <></>
       )}
-      {products ? (
-        <div className=" pt-2 pb-3 bg-gradient-to-r from-white to-orange-100 ">
+      {products && products.length > 0 ?  (
+        <div className=" pt-2 pb-3 bg-gradient-to-r from-white to-orange-100  px-5 md:px-20">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-5  px-5 items-center justify-center">
             {products?.map((product) => (
               <Link key={product.id}

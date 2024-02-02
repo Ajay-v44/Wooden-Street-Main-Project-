@@ -101,7 +101,7 @@ const DetailProduct = () => {
                 <img
                   src={url + selectedImage}
                   alt=""
-                  className="w-96 md:w-[38rem]"
+                  className="w-96 md:w-[38rem] h-96"
                 />
                 <div className="flex items-center justify-center gap-5 pt-3">
                   <img

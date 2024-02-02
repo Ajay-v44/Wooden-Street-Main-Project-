@@ -23,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/whishlist" element={<Whislist />} />
         <Route path="/dtproduct/:id" element={<DetaileProduct />} />
+        <Route path="/products/:id" element={<Productpage />} />
         <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
       <Footer />
