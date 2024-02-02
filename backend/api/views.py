@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework import status
 from .models import *
+from django.db.models import Q
 from .serializers import *
 # Create your views here.
 
@@ -15,7 +16,7 @@ from .serializers import *
 @permission_classes([IsAuthenticatedOrReadOnly])
 def products(request, type=None):
     if type:
-        data = Products.object.filter(pname__icontains=type)
+        data = Products.objects.filter(Q(pname__icontains=type)| Q(pdesc__icontains=type))
         serializer = ProductSerializer(data, many=True)
         return Response(
             serializer.data
