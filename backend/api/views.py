@@ -57,13 +57,17 @@ def createUser(request):
                  "status": status.HTTP_201_CREATED
                  }
             )
-    except:
+        else:
+            return Response({
+                "message":serializer.errors
+            })
+    except Exception as e:
         return Response({
-            "message": "User Already Exists",
+            "message": f"User Already Exists.{e} ",
             "status": status.HTTP_400_BAD_REQUEST,
 
         })
-
+    
 
 class LoginView(APIView):
     def post(self, request):

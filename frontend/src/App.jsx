@@ -11,9 +11,24 @@ import Register from "./pages/Register";
 import Whislist from "./pages/Whislist";
 import DetaileProduct from "./pages/DetaileProduct";
 import UserProfile from "./pages/UserProfile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition:Flip
+      />
       <Header />
       <Routes>
         <Route path="/" element={<Homepage />} />

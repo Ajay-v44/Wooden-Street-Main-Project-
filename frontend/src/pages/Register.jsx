@@ -1,11 +1,61 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {toast} from 'react-toastify'
-
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Register = () => {
+  const [datas, Setdatas] = useState({
+    name: "",
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+  });
+
+  const handleOnChange = (e) => {
+    let names = e.target.name;
+    let val = e.target.value;
+    Setdatas((prev) => {
+      return { ...prev, [names]: val };
+    });
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const resposnse = await axios.post(
+        "/api/register/",
+        {
+          username: datas.name,
+          first_name: datas.fname,
+          last_name: datas.lname,
+          email: datas.email,
+          password: datas.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      Setdatas({ name: "", fname: "", lname: "", email: "", password: "" });
+
+      console.log(resposnse.data.message);
+
+      if (resposnse.data.status === 201) {
+        toast.success(resposnse.data.message);
+      } else {
+        toast.warning(resposnse.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="flex justify-center items-center mt-10">
       <div className="  border  shadow-lg hover:shadow-2xl bg-white  rounded-lg  md:w-[55rem] ">
@@ -20,55 +70,66 @@ const Register = () => {
           <div className="font-mono">
             <h2 className="text-xl md:text-2xl">Register</h2>
             <small>Get exclusive discounts, newsletters and more</small>
-            <form className="pt-3 flex flex-col justify-between items-center pr-2">
+            <form
+              className="pt-3 flex flex-col justify-between items-center pr-2"
+              onSubmit={handleOnSubmit}
+            >
               <input
                 type="text"
                 name="name"
                 id=""
+                value={datas.name}
                 placeholder=" User Name"
                 className="w-50 md:w-80 rounded-md "
                 required
                 minLength={3}
+                onChange={handleOnChange}
               />
               <div className="flex gap-1 pt-5">
                 <input
                   type="text"
-                  name="First Name"
+                  name="fname"
+                  value={datas.fname}
                   placeholder=" First Name"
                   className="w-40 md:w-40 rounded-md "
                   required
                   minLength={3}
+                  onChange={handleOnChange}
                 />
                 <input
                   type="text"
-                  name="Last Name"
+                  name="lname"
+                  value={datas.lname}
                   placeholder=" Last Name"
                   className="w-40 md:w-40 rounded-md "
                   required
                   minLength={3}
+                  onChange={handleOnChange}
                 />
               </div>
               <input
                 type="email"
                 name="email"
+                value={datas.email}
                 id=""
                 placeholder="Email"
                 className="w-50 md:w-80 rounded-md mt-5"
                 required
                 minLength={5}
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                onChange={handleOnChange}
               />
 
               <div className="relative flex">
                 <input
                   type="password"
                   name="password"
+                  value={datas.password}
                   id=""
                   placeholder="Password"
                   className="w-50 md:w-80 rounded-md mt-5 mr-1"
                   required
                   minLength={5}
-                  pattern="/^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,12}$/g"
+                  onChange={handleOnChange}
                 />
 
                 <button
@@ -111,10 +172,17 @@ const Register = () => {
               </Link>{" "}
             </p>
             <hr />
-            <p className="text-center pt-3 text-gray-500 items-center">OR Continue With <span className="text-orange-300 hover:text-orange-700 text-xl cursor-pointer"> <FontAwesomeIcon icon={faGoogle}/></span> <FontAwesomeIcon
-              icon={faFacebook}
-              className="text-blue-400  cursor-pointer  text-xl hover:text-blue-600"
-            /></p>
+            <p className="text-center pt-3 text-gray-500 items-center">
+              OR Continue With{" "}
+              <span className="text-orange-300 hover:text-orange-700 text-xl cursor-pointer">
+                {" "}
+                <FontAwesomeIcon icon={faGoogle} />
+              </span>{" "}
+              <FontAwesomeIcon
+                icon={faFacebook}
+                className="text-blue-400  cursor-pointer  text-xl hover:text-blue-600"
+              />
+            </p>
           </div>
         </div>
       </div>
