@@ -9,6 +9,8 @@ from rest_framework import status
 from .models import *
 from django.db.models import Q
 from .serializers import *
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
@@ -16,7 +18,8 @@ from .serializers import *
 @permission_classes([IsAuthenticatedOrReadOnly])
 def products(request, type=None):
     if type:
-        data = Products.objects.filter(Q(pname__icontains=type)| Q(pdesc__icontains=type))
+        data = Products.objects.filter(
+            Q(pname__icontains=type) | Q(pdesc__icontains=type))
         serializer = ProductSerializer(data, many=True)
         return Response(
             serializer.data
@@ -59,7 +62,7 @@ def createUser(request):
             )
         else:
             return Response({
-                "message":serializer.errors
+                "message": serializer.errors
             })
     except Exception as e:
         return Response({
@@ -67,13 +70,17 @@ def createUser(request):
             "status": status.HTTP_400_BAD_REQUEST,
 
         })
-    
+
 
 class LoginView(APIView):
     def post(self, request):
         user = authenticate(request, username=request.data.get(
             'username'), password=request.data.get('password'))
+        print("name",request.data.get(
+            'username'),request.data.get('password'))
         if user:
+            login(request, user)
+            print("username",request.user)
             return Response({
                 "message": "Welcome To Wooden Store",
                 "status": status.HTTP_200_OK
@@ -84,10 +91,14 @@ class LoginView(APIView):
                 "status": status.HTTP_400_BAD_REQUEST
             })
 
-
-class LogoutView(APIView):
-    def post(self, request):
+@csrf_exempt
+@api_view(['POST'])
+def LogoutView(request):
+    print("i am called")
+    print("username",request.user)
+    try:
         if request.user:
+            print("user is",request.user)
             logout(request)
             return Response({
                 "message": "logged out successfully",
@@ -98,3 +109,7 @@ class LogoutView(APIView):
                 "message": "Sorry Error Occured",
                 "status": status.HTTP_406_NOT_ACCEPTABLE
             })
+    except:
+        return Response({
+            "message": "no user"
+        })

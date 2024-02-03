@@ -16,7 +16,41 @@ import {
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 const Header = () => {
+  axios.defaults.withCredentials = true;
+  const handleOnClick = async () => {
+    console.log("called");
+    try {
+      function getCookie(name) {
+        const cookieValue = document.cookie.match(
+          "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
+        );
+        return cookieValue ? cookieValue.pop() : "";
+      }
+      const csrftoken = getCookie("csrftoken");
+      console.log(csrftoken)
+      const response = await axios.post(
+        "/api/logout/",
+        {},  // Add an empty object for the request data
+        {
+          headers: {
+            "X-CSRFToken": csrftoken,
+          },
+        }
+      );
+  
+      if (response.data.status === 200) {
+        toast.info(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   return (
     <>
       <div className="bg-slate-100 md:px-40 pl-10">
@@ -163,28 +197,28 @@ const Header = () => {
                 </a>
               </li>
               <li>
-                <Link to={'/login'}
-                  
+                <Link
+                  to={"/login"}
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Login
                 </Link>
               </li>
               <li>
-                <Link to={'/register'}
-                  
+                <Link
+                  to={"/register"}
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Register
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                <button
+                  onClick={handleOnClick}
+                  className="block px-4 py-2 bg-red-600 text-white"
                 >
                   Sign out
-                </a>
+                </button>
               </li>
             </ul>
           </div>

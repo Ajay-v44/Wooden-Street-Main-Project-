@@ -6,5 +6,5 @@ urlpatterns = [
     path('dtproducts/<int:id>/', getdtproduct),
     path('register/', createUser, name='create_user'),
     path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', LogoutView, name='logout')
 ]
