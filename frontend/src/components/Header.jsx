@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
@@ -18,22 +18,30 @@ import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+async function fetchCSRFToken() {
+  const response = await fetch("/api/get-csrf-token/");
+  const data = await response.json();
+  return data.csrf_token;
+}
 const Header = () => {
-  axios.defaults.withCredentials = true;
-  const handleOnClick = async () => {
-    console.log("called");
+  const [csrftoken, setCSRFToken] = useState(null);
+
+  useEffect(() => {
+    const getCSRFToken = async () => {
+      const token = await fetchCSRFToken();
+      setCSRFToken(token);
+    };
+
+    getCSRFToken();
+  }, []);
+
+  const handleLogout = async () => {
     try {
-      function getCookie(name) {
-        const cookieValue = document.cookie.match(
-          "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
-        );
-        return cookieValue ? cookieValue.pop() : "";
-      }
-      const csrftoken = getCookie("csrftoken");
-      console.log(csrftoken)
+      console.log("CSRF Token before logout:", csrftoken);
+  
       const response = await axios.post(
         "/api/logout/",
-        {},  // Add an empty object for the request data
+        {},
         {
           headers: {
             "X-CSRFToken": csrftoken,
@@ -41,16 +49,23 @@ const Header = () => {
         }
       );
   
-      if (response.data.status === 200) {
+      console.log("Logout response:", response);
+  
+      if (response.status === 200) {
         toast.info(response.data.message);
+        // Fetch a new CSRF token after successful logout
+        const newToken = await fetchCSRFToken();
+        console.log("New CSRF Token after logout:", newToken);
+        setCSRFToken(newToken);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
     }
   };
   
+
   return (
     <>
       <div className="bg-slate-100 md:px-40 pl-10">
@@ -214,7 +229,7 @@ const Header = () => {
               </li>
               <li>
                 <button
-                  onClick={handleOnClick}
+                  onClick={handleLogout}
                   className="block px-4 py-2 bg-red-600 text-white"
                 >
                   Sign out
@@ -222,7 +237,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
-
+          
           <Link
             to={"/whishlist"}
             className="flex flex-col justify-center items-center"

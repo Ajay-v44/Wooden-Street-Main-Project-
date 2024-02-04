@@ -11,6 +11,8 @@ from django.db.models import Q
 from .serializers import *
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import get_token
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -90,8 +92,13 @@ class LoginView(APIView):
                 "message": "Credential dont match",
                 "status": status.HTTP_400_BAD_REQUEST
             })
+class CSRFTokenView(APIView):
+    def get(self, request, *args, **kwargs):
+        token = get_token(request)
+        print("token called",token)
+        return JsonResponse({'csrf_token': token})
 
-@csrf_exempt
+# @csrf_exempt
 @api_view(['POST'])
 def LogoutView(request):
     print("i am called")
