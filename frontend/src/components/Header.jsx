@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartShopping,
   faLocationDot,
+  faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -15,25 +16,25 @@ import {
 
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-async function fetchCSRFToken() {
-  const response = await fetch("/api/get-csrf-token/");
-  const data = await response.json();
-  return data.csrf_token;
-}
 
 const Header = () => {
- 
-  axios.defaults.withCredentials = true;
-  const [csrftoken, setCSRFToken] = useState(null);
+  const navigate = useNavigate();
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const getToken = () => {
+      setToken(localStorage.getItem("token"));
+    };
 
+    getToken();
+  }, [localStorage.getItem('token')]);
+
+  axios.defaults.withCredentials = true;
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-  
       const response = await axios.post(
         "/api/logout/",
         {},
@@ -44,10 +45,12 @@ const Header = () => {
           withCredentials: true,
         }
       );
-  
+
       localStorage.removeItem("token");
+      setToken(null);
+      navigate("/");
       console.log("Logout response:", response);
-  
+
       if (response.status === 200) {
         toast.info(response.data.message);
       } else {
@@ -202,30 +205,28 @@ const Header = () => {
                   Dashboard
                 </a>
               </li>
-              <li>
-                <Link
-                  to={"/login"}
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={"/register"}
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Register
-                </Link>
-              </li>
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="block px-4 py-2 bg-red-600 text-white"
-                >
-                  Sign out
-                </button>
-              </li>
+              {token ? (
+                ""
+              ) : (
+                <>
+                  <li>
+                    <Link
+                      to={"/login"}
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={"/register"}
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -251,6 +252,17 @@ const Header = () => {
 
             <span className="text-xs hover:underline">Cart (0)</span>
           </Link>
+
+          {token ? (
+            <button
+              onClick={handleLogout}
+              className="block px-4 py-2 bg-red-600 text-white rounded-3xl"
+            >
+              <FontAwesomeIcon icon={faPowerOff} />
+            </button>
+          ) : (
+            <h1></h1>
+          )}
         </div>
       </div>
       <div className="md:mx-40 mx-0 flex justify-between items-center text-gray-500 ">

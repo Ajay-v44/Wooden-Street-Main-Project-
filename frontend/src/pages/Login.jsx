@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 const Login = () => {
+  const navigate=useNavigate()
   const [datas, Setdatas] = useState({
     name: "",
     password: "",
@@ -34,6 +35,7 @@ const Login = () => {
         }
       );
       localStorage.setItem("token",resposnse.data.token)
+      navigate('/')
       Setdatas({ name: "", password: "" });
       if (resposnse.data.status === 200) {
         toast.success(resposnse.data.message);
