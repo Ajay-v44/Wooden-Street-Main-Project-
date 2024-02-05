@@ -39,8 +39,10 @@ const DetailProduct = () => {
       try {
         setLoading(true);
         const response = await axios.get(`/api/dtproducts/${id}/`);
-        setProducts(response.data);
-        setSelectedImage(response.data[0]?.img1); // Set the initial image
+
+        setProducts([response.data]);
+
+        setSelectedImage(response.data?.img1);
         setLoading(false);
       } catch (error) {
         console.log(error);

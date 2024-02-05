@@ -1,19 +1,19 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework import status
-from .models import *
+from .models import Products
 from django.db.models import Q
-from .serializers import *
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.authentication import TokenAuthentication
+from .serializers import ProductSerializer, UserSerializer
 from django.views.decorators.csrf import get_token
+from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
-# Create your views here.
+from django.core.exceptions import ObjectDoesNotExist
+from django.middleware.csrf import rotate_token
 
 
 @api_view(['GET'])
@@ -23,32 +23,21 @@ def products(request, type=None):
         data = Products.objects.filter(
             Q(pname__icontains=type) | Q(pdesc__icontains=type))
         serializer = ProductSerializer(data, many=True)
-        return Response(
-            serializer.data
-        )
+        return Response(serializer.data)
     else:
         data = Products.objects.all()
         serializer = ProductSerializer(data, many=True)
-        return Response(
-            serializer.data
-        )
+        return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getdtproduct(request, id):
     try:
-        data = Products.objects.filter(id=id)
-        serializer = ProductSerializer(data, many=True)
-        return Response(
-            serializer.data
-        )
-    except:
-        return Response(
-            {
-                'message': status.HTTP_404_NOT_FOUND,
-
-            }
-        )
+        data = Products.objects.get(id=id)
+        serializer = ProductSerializer(data)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        return Response({'message': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -57,66 +46,87 @@ def createUser(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(
-                {"message": "User Created Succesfully",
-                 "status": status.HTTP_201_CREATED
-                 }
-            )
+            user = serializer.instance
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                "message": "User Created Successfully",
+                "status": status.HTTP_201_CREATED,
+                "token": token.key
+            })
         else:
             return Response({
-                "message": serializer.errors
+                "message": serializer.errors,
+                "status": status.HTTP_400_BAD_REQUEST
             })
     except Exception as e:
         return Response({
-            "message": f"User Already Exists.{e} ",
+            "message": f"User Already Exists. {e}",
             "status": status.HTTP_400_BAD_REQUEST,
-
         })
+
+# class LoginView(APIView):
+#     def post(self, request):
+#         user = authenticate(request, username=request.data.get('username'), password=request.data.get('password'))
+#         if user:
+#             login(request, user)
+#             return Response({
+#                 "message": "Welcome To Wooden Store",
+#                 "status": status.HTTP_200_OK
+#             })
+#         else:
+#             return Response({
+#                 "message": "Credentials don't match",
+#                 "status": status.HTTP_400_BAD_REQUEST
+#             })
+
+
+class CSRFTokenView(APIView):
+    def get(self, request, *args, **kwargs):
+        token = get_token(request)
+        print("useris token", request.user)
+        return JsonResponse({'csrf_token': token})
 
 
 class LoginView(APIView):
     def post(self, request):
-        user = authenticate(request, username=request.data.get(
-            'username'), password=request.data.get('password'))
-        print("name",request.data.get(
-            'username'),request.data.get('password'))
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
         if user:
-            login(request, user)
-            print("username",request.user)
+            token, created = Token.objects.get_or_create(user=user)
+            
             return Response({
                 "message": "Welcome To Wooden Store",
-                "status": status.HTTP_200_OK
+                "status": status.HTTP_200_OK,
+                "token": token.key
             })
         else:
             return Response({
-                "message": "Credential dont match",
+                "message": "Credentials don't match",
                 "status": status.HTTP_400_BAD_REQUEST
             })
-class CSRFTokenView(APIView):
-    def get(self, request, *args, **kwargs):
-        token = get_token(request)
-        print("token called",token)
-        return JsonResponse({'csrf_token': token})
 
-# @csrf_exempt
-@api_view(['POST'])
-def LogoutView(request):
-    print("i am called")
-    print("username",request.user)
-    try:
-        if request.user:
-            print("user is",request.user)
-            logout(request)
+
+class LogoutView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Delete the token associated with the user
+        try:
+            Token.objects.filter(user=request.user).delete()
+           
+
             return Response({
-                "message": "logged out successfully",
+                "message": "Logged out successfully",
                 "status": status.HTTP_200_OK
             })
-        else:
+        except Exception as e:
+            print(e)
             return Response({
-                "message": "Sorry Error Occured",
-                "status": status.HTTP_406_NOT_ACCEPTABLE
+                "error":5,
+                "message":"sorry error occured"
             })
-    except:
-        return Response({
-            "message": "no user"
-        })
+        

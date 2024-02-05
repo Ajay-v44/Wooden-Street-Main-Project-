@@ -23,40 +23,33 @@ async function fetchCSRFToken() {
   const data = await response.json();
   return data.csrf_token;
 }
+
 const Header = () => {
+ 
+  axios.defaults.withCredentials = true;
   const [csrftoken, setCSRFToken] = useState(null);
 
-  useEffect(() => {
-    const getCSRFToken = async () => {
-      const token = await fetchCSRFToken();
-      setCSRFToken(token);
-    };
-
-    getCSRFToken();
-  }, []);
 
   const handleLogout = async () => {
     try {
-      console.log("CSRF Token before logout:", csrftoken);
+      const token = localStorage.getItem("token");
   
       const response = await axios.post(
         "/api/logout/",
         {},
         {
           headers: {
-            "X-CSRFToken": csrftoken,
+            Authorization: `token ${token}`,
           },
+          withCredentials: true,
         }
       );
   
+      localStorage.removeItem("token");
       console.log("Logout response:", response);
   
       if (response.status === 200) {
         toast.info(response.data.message);
-        // Fetch a new CSRF token after successful logout
-        const newToken = await fetchCSRFToken();
-        console.log("New CSRF Token after logout:", newToken);
-        setCSRFToken(newToken);
       } else {
         toast.error(response.data.message);
       }
@@ -64,8 +57,6 @@ const Header = () => {
       console.error("Logout error:", error);
     }
   };
-  
-
   return (
     <>
       <div className="bg-slate-100 md:px-40 pl-10">
@@ -237,7 +228,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
-          
+
           <Link
             to={"/whishlist"}
             className="flex flex-col justify-center items-center"

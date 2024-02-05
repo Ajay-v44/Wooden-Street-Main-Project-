@@ -44,9 +44,13 @@ INSTALLED_APPS = [
     # thirt party apps
     "corsheaders",
     'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
+     # third part middleware
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,9 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # third part middleware
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+   
 ]
 CORS_ALLOWED_ORIGINS = [
    "http://localhost:5173"
@@ -95,17 +97,21 @@ DATABASES = {
             'host': 'mongodb+srv://vajay4834:1234@django-clusture.yxzxtju.mongodb.net/?retryWrites=true&w=majority',
             'username':'vajay4834',
             'password': '1234',
-            # 'authSource': 'your_auth_database',  # Remove this line if not used
         },
         'NAME': 'WoodenStore',# Change this to the new database name
         # change in model also add djongo
     }
 }
+# settings.py
+
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # ... other authentication classes
+    ],
+    # ... other settings
 }
+
 
 
 # Password validation

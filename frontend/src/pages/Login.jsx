@@ -33,6 +33,7 @@ const Login = () => {
           },
         }
       );
+      localStorage.setItem("token",resposnse.data.token)
       Setdatas({ name: "", password: "" });
       if (resposnse.data.status === 200) {
         toast.success(resposnse.data.message);
