@@ -25,3 +25,24 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super(UserSerializer, self).create(validated_data)
+
+
+class CartSerializer_post(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['product', 'product_name', 'price', 'qty', 'user']
+
+
+class CartSerializer_get(serializers.ModelSerializer):
+    product = ProductSerializer()
+    user = UserSerializer()
+
+    class Meta:
+        model = Cart
+        fields = ['product', 'product_name', 'price', 'qty', 'user']
+
+
+class CartSerializer_patch(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['qty']

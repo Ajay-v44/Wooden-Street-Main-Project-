@@ -23,6 +23,9 @@ class Products(models.Model):
     rating = models.IntegerField(validators=[MaxValueValidator(5)])
     color = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.pname
+
     def discountedPrice(self):
         print(int(self.price - (self.price * self.offer) / 100))
         return int(self.price - (self.price * self.offer) / 100)
@@ -37,3 +40,21 @@ class ProductAdmin(admin.ModelAdmin):
                     'stock_count', 'brand', 'warranty')
     search_fields = ['pname', 'price', 'brand', 'warranty']
     list_filter = ['price', 'brand']
+
+
+class Cart(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=150)
+    price = models.IntegerField()
+    qty = models.IntegerField(default=1)
+
+    class Meta:
+        db_table = 'Cart'
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('product_id', 'user_id', 'product_name', 'price', 'qty')
+    search_fields = ['product', 'user', 'product_name', 'price', 'qty']
+    list_filter = ['user', 'product_name', 'price', 'qty']
