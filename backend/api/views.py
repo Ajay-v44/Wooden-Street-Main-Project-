@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Products, Cart
 from django.db.models import Q
+from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from .serializers import ProductSerializer, UserSerializer, CartSerializer_get, CartSerializer_post, CartSerializer_patch
 from django.views.decorators.csrf import get_token
@@ -77,16 +78,15 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-
         user = authenticate(request, username=username, password=password)
-
         if user:
-            token, created = Token.objects.get_or_create(user=user)
 
+            token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "message": "Welcome To Wooden Store",
                 "status": status.HTTP_200_OK,
-                "token": token.key
+                "token": token.key,
+                "id": user.id
             })
         else:
             return Response({

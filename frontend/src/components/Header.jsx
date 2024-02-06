@@ -47,6 +47,8 @@ const Header = () => {
       );
 
       localStorage.removeItem("token");
+      localStorage.removeItem("id");
+
       setToken(null);
       navigate("/");
       console.log("Logout response:", response);

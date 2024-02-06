@@ -34,7 +34,10 @@ const Login = () => {
           },
         }
       );
+      
       localStorage.setItem("token",resposnse.data.token)
+      localStorage.setItem("id",resposnse.data.id)
+      console.log("token",localStorage.getItem('token'),"id",localStorage.getItem('id'))
       navigate('/')
       Setdatas({ name: "", password: "" });
       if (resposnse.data.status === 200) {

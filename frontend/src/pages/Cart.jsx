@@ -7,9 +7,22 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {toast}  from 'react-toastify'
 const Cart = () => {
+  
+  const navigate=useNavigate()
+  const token=localStorage.getItem('token');
+  const id=localStorage.getItem('id');
+  useEffect(() => {
+    if (!token || !id) {
+      navigate('/login');
+      toast.warning('Login To Continue');
+    }
+  }, [token, id]);
+
+
   return (
     <div className="pt-3 pb-2 px-5 md:px-32 bg-blue-50">
       <div className="flex flex-col md:flex-row gap-3">

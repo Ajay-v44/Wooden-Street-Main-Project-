@@ -6,15 +6,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const DetailProduct = () => {
+  const navigate = useNavigate();
+  const [discount, setDiscount] = useState(null);
   const Calcprice = ({ prices, offers }) => {
     const discountedPrice = parseInt(prices - (prices * offers) / 100);
+    setDiscount(discountedPrice);
     return <>{discountedPrice}</>;
   };
-
   const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -26,7 +28,6 @@ const DetailProduct = () => {
     const stars = Array.from({ length: rating }, (_, index) => (
       <FontAwesomeIcon key={index} icon={faStar} className="text-orange-300" />
     ));
-
     return <div>{stars}</div>;
   };
 
@@ -39,9 +40,7 @@ const DetailProduct = () => {
       try {
         setLoading(true);
         const response = await axios.get(`/api/dtproducts/${id}/`);
-
         setProducts([response.data]);
-
         setSelectedImage(response.data?.img1);
         setLoading(false);
       } catch (error) {
@@ -51,6 +50,43 @@ const DetailProduct = () => {
     getDetailProduct();
   }, [id]);
 
+  axios.defaults.withCredentials = true;
+
+  const handleAddToCart = async (pid, pname) => {
+    try {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
+      if (token && id) {
+        const response = await axios.post(
+          "/api/cart/",
+          {
+            user: id,
+            product: pid,
+            product_name: pname,
+            price: discount,
+          },
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        if (response) {
+          toast.success(response.data.message);
+        }
+      } else {
+        navigate("/login");
+        toast.warning("Login to continue !");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        "An error occurred while adding to cart. Please try again later."
+      );
+    }
+  };
   return (
     <>
       {loading ? (
@@ -148,7 +184,7 @@ const DetailProduct = () => {
 
                 <p>
                   <span className="font-semibold text-3xl">
-                  <span className="pr-3"> RS</span>
+                    <span className="pr-3"> RS</span>
                     <Calcprice
                       prices={product.price}
                       offers={product.offer}
@@ -204,7 +240,12 @@ const DetailProduct = () => {
                 </p>
 
                 <div className="flex justify-between items-center pt-5">
-                  <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
+                  <button
+                    className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 "
+                    onClick={() => {
+                      handleAddToCart(product.id, product.pname);
+                    }}
+                  >
                     <FontAwesomeIcon icon={faCartShopping} className="pr-3" />{" "}
                     ADD TO CART
                   </button>
