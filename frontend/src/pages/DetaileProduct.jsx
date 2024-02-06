@@ -147,8 +147,8 @@ const DetailProduct = () => {
                 </p>
 
                 <p>
-                  <span className="font-semibold">
-                    RS
+                  <span className="font-semibold text-3xl">
+                  <span className="pr-3"> RS</span>
                     <Calcprice
                       prices={product.price}
                       offers={product.offer}

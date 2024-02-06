@@ -29,7 +29,7 @@ const Header = () => {
     };
 
     getToken();
-  }, [localStorage.getItem('token')]);
+  }, [localStorage.getItem("token")]);
 
   axios.defaults.withCredentials = true;
 
@@ -120,10 +120,7 @@ const Header = () => {
               Your Email
             </label>
 
-            <div
-              id="dropdown"
-              // className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-            ></div>
+            <div id="dropdown"></div>
             <div className="relative w-full">
               <input
                 type="search"
