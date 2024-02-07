@@ -23,13 +23,15 @@ import axios from "axios";
 const Header = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
+  const [cartNumber, setCartNumber] = useState(0);
   useEffect(() => {
     const getToken = () => {
       setToken(localStorage.getItem("token"));
+      setCartNumber(localStorage.getItem("cart"));
     };
 
     getToken();
-  }, [localStorage.getItem("token")]);
+  }, [localStorage.getItem("token"),localStorage.getItem("cart")]);
 
   axios.defaults.withCredentials = true;
 
@@ -46,8 +48,7 @@ const Header = () => {
         }
       );
 
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
+      localStorage.clear();
 
       setToken(null);
       navigate("/");
@@ -64,7 +65,7 @@ const Header = () => {
   };
   return (
     <>
-      <div className="bg-slate-100 md:px-40 pl-10">
+      <div className="bg-slate-100 md:px-40 pl-10 ">
         <div className="flex pt-5 pb-3 justify-between items-center">
           <div className="flex justify-start gap-3 items-center">
             <FontAwesomeIcon icon={faLocationDot} />
@@ -249,7 +250,7 @@ const Header = () => {
               className="text-orange-300 text-2xl hover:text-orange-500"
             />
 
-            <span className="text-xs hover:underline">Cart (0)</span>
+            <span className="text-xs hover:underline">Cart ({cartNumber})</span>
           </Link>
 
           {token ? (
@@ -264,7 +265,7 @@ const Header = () => {
           )}
         </div>
       </div>
-      <div className="md:mx-40 mx-0 flex justify-between items-center text-gray-500 ">
+      <div className="md:mx-40 mx-0 flex justify-between items-center text-gray-500  ">
         <Link
           className="hover:text-orange-300 hover:underline "
           to={"products/sofa"}
