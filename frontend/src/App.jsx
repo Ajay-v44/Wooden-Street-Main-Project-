@@ -13,6 +13,7 @@ import UserProfile from "./pages/UserProfile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
+import Address from "./pages/Address";
 function App() {
   return (
     <BrowserRouter>
@@ -33,13 +34,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/product" element={<Productpage />} />
-        <Route path="/cart" element={<Cart/>} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/whishlist" element={<Whislist />} />
         <Route path="/dtproduct/:id" element={<DetaileProduct />} />
         <Route path="/products/:id" element={<Productpage />} />
         <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/address/:totaloffer/:totalprice/:todaydeal" element={<Address />} />
       </Routes>
       <Footer />
     </BrowserRouter>

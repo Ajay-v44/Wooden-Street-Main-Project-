@@ -60,6 +60,11 @@ const Cart = () => {
   );
   const todaysDeal = 2000;
 
+  const states={
+    "totaloffer":totalOffers,
+    "totalprice":totalPrice,
+    "todaydeal":todaysDeal
+  }
   const removeCartItems = async (id) => {
     try {
       const response = await axios.delete(`/api/cart/${id}`, {
@@ -274,12 +279,15 @@ const Cart = () => {
                         </small>
                       </span>
                     </p>
-                    <div className="flex justify-center items-center mt-5">
+                    <Link className="flex justify-center items-center mt-5" to={`/address/${totalOffers}/${totalPrice}/${todaysDeal}`}>
+
+
+                    {/* <Link className="flex justify-center items-center mt-5" to={{pathname:'/address',state:{states}}}> */}
                       <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
                         <FontAwesomeIcon icon={faBuyNLarge} className="pr-3" />{" "}
-                        Buy Now
+                        Continue
                       </button>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>

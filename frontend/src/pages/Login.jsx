@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 const Login = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [datas, Setdatas] = useState({
     name: "",
     password: "",
@@ -34,14 +34,19 @@ const Login = () => {
           },
         }
       );
-      
-      localStorage.setItem("token",resposnse.data.token)
-      localStorage.setItem("id",resposnse.data.id)
-      console.log("token",localStorage.getItem('token'),"id",localStorage.getItem('id'))
-      navigate('/')
+
+      console.log(
+        "token",
+        localStorage.getItem("token"),
+        "id",
+        localStorage.getItem("id")
+      );
       Setdatas({ name: "", password: "" });
       if (resposnse.data.status === 200) {
         toast.success(resposnse.data.message);
+        localStorage.setItem("token", resposnse.data.token);
+        localStorage.setItem("id", resposnse.data.id);
+        navigate("/");
       } else {
         toast.warning(resposnse.data.message);
       }
@@ -90,7 +95,7 @@ const Login = () => {
                 className="w-50 md:w-80 rounded-md mt-5 mr-1"
                 required
                 minLength={5}
-                pattern="/^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,12}$/g"
+                
               />
 
               <button className="p-2 ml-5 rounded-lg text-white bg-gradient-to-r mt-3 from-orange-500 to-orange-300 w-60 h-10 hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-500 ">
