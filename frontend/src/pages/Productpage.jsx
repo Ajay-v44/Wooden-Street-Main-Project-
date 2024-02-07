@@ -89,9 +89,8 @@ const Productpage = () => {
           </button>
         </div>
       ) : (
-        <></>
-      )}
-      {products && products.length > 0 ?  (
+        <>
+             {products && products.length > 0 ?  (
         <div className=" pt-2 pb-3 bg-gradient-to-r from-white to-orange-100  px-5 md:px-20">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-5  px-5 items-center justify-center">
             {products?.map((product) => (
@@ -145,6 +144,9 @@ const Productpage = () => {
           </div>
         </div>
       )}
+        </>
+      )}
+ 
     </>
   );
 };
