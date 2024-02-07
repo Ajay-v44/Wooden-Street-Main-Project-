@@ -5,11 +5,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Products, Cart
+from .models import Products, Cart, DeliveryAddress
 from django.db.models import Q
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
-from .serializers import ProductSerializer, UserSerializer, CartSerializer_get, CartSerializer_post, CartSerializer_patch
+from .serializers import ProductSerializer, UserSerializer, CartSerializer_get, CartSerializer_post, CartSerializer_patch, DeliveryAddressSerializer, DeliveryAddressSerializer_get, DeliveryAddressSerializer_put
 from django.views.decorators.csrf import get_token
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
@@ -193,3 +193,70 @@ class AddToCart(APIView):
             return Response({
                 "message": "Sorry some thing went wrong"
             })
+
+
+class DeliveryAddresss(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = DeliveryAddressSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "message": "Succesfully Added",
+
+                }, status=status.HTTP_201_CREATED)
+            else:
+                return Response({
+                    "message": "Sorry error occured try again",
+                    "error": serializer.errors
+
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({
+                "message": "sorry error occured",
+                "error": str(e)
+
+            }, status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, id):
+        try:
+            data = DeliveryAddress.objects.filter(user=id)
+            if not data:
+                return Response({
+                    "message": "Not Found",
+                    "status": status.HTTP_404_NOT_FOUND
+                }, status=status.HTTP_404_NOT_FOUND)
+            else:
+                serializer = DeliveryAddressSerializer_get(data, many=True)
+                return Response(serializer.data)
+        except Exception as e:
+            return Response({
+                "message": "sorry error occured",
+                "error": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, id):
+        try:
+            instance = DeliveryAddress.objects.get(user=id)
+            serializer = DeliveryAddressSerializer_put(
+                instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "data": serializer.data,
+                    "message": "Updated",
+                    "status": status.HTTP_202_ACCEPTED
+                })
+            else:
+                return Response({
+                    "message": "Try again",
+                    "error": serializer.errors
+                }, status=status.HTTP_403_FORBIDDEN)
+        except Exception as e:
+            return Response({
+                "message": "sorry error occured",
+                "error": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)

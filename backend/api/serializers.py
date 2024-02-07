@@ -39,10 +39,32 @@ class CartSerializer_get(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ['id','product', 'product_name', 'price', 'qty', 'user']
+        fields = ['id', 'product', 'product_name', 'price', 'qty', 'user']
 
 
 class CartSerializer_patch(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['qty']
+
+
+class DeliveryAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryAddress
+        fields = "__all__"
+
+
+class DeliveryAddressSerializer_get(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = DeliveryAddress
+        fields = ['user', 'mob1', 'mob2', 'postalcode', 'address',
+                  'area', 'landmark', 'city', 'state']
+
+
+class DeliveryAddressSerializer_put(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryAddress
+        fields = ['user', 'mob1', 'mob2', 'postalcode', 'address',
+                  'area', 'landmark', 'city', 'state']

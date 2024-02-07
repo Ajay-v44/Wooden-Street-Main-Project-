@@ -11,5 +11,8 @@ urlpatterns = [
     path('get-csrf-token/', CSRFTokenView.as_view(), name='get-csrf-token'),
     path('api-token-auth/', views.obtain_auth_token),
     path('cart/', AddToCart.as_view(), name='cart'),
-    path('cart/<int:id>/', AddToCart.as_view(), name='cartid')
+    path('cart/<int:id>/', AddToCart.as_view(), name='cartid'),
+    path('address/', DeliveryAddresss.as_view(), name='address'),
+    path('address/<int:id>/', DeliveryAddresss.as_view(), name='address')
+
 ]

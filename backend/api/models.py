@@ -58,3 +58,26 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ('product_id', 'user_id', 'product_name', 'price', 'qty')
     search_fields = ['product', 'user', 'product_name', 'price', 'qty']
     list_filter = ['user', 'product_name', 'price', 'qty']
+
+
+class DeliveryAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mob1 = models.IntegerField()
+    mob2 = models.IntegerField(blank=True)
+    postalcode = models.IntegerField()
+    address = models.CharField(max_length=150)
+    area = models.CharField(max_length=150)
+    landmark = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'DeliveryAddress'
+
+
+@admin.register(DeliveryAddress)
+class DeliveryAddressAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'mob1', 'postalcode', 'address',
+                    'area', 'landmark', 'city', 'state')
+    search_fields = ['postalcode', 'area', 'landmark', 'city', 'state']
+    list_filter = ['postalcode', 'area', 'landmark', 'city', 'state']
