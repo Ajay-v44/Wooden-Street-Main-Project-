@@ -9,7 +9,7 @@ from .models import Products, Cart, DeliveryAddress
 from django.db.models import Q
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
-from .serializers import ProductSerializer, UserSerializer, CartSerializer_get, CartSerializer_post, CartSerializer_patch, DeliveryAddressSerializer, DeliveryAddressSerializer_get, DeliveryAddressSerializer_put
+from .serializers import *
 from django.views.decorators.csrf import get_token
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
@@ -254,4 +254,79 @@ class DeliveryAddresss(APIView):
             return Response({
                 "message": "sorry error occured",
                 "error": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)
+
+
+class OrderView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            data = request.data
+            user_id = data.get("user")
+            address_id = data.get("address")
+            total = data.get("total", 0)
+            cart = Cart.objects.filter(user=user_id)
+            user = User.objects.get(id=user_id)
+            address = DeliveryAddress.objects.get(id=address_id)
+            orders = []
+            for item in cart:
+                order = Order.objects.create(
+                    user=user,
+                    address=address,
+                    cart=item,
+                    total=item.price
+                )
+                orders.append(order)
+            return Response({
+                "message": "order placed successfully .You will receive order Within 7 days from today",
+                "data": OrderSerializer(orders, many=True).data
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, id):
+        try:
+            data = Order.objects.filter(user=id)
+            serializer = OrderSerializer_get(data, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)
+
+    def patch(self, request, id):
+        try:
+            instance = Order.objects.get(id=id)
+            serializer = OrderSerializer_patch(
+                instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "message": "Updated",
+                    "status": status.HTTP_202_ACCEPTED
+                })
+            else:
+                return Response({
+                    "message": "Try again",
+                    "error": serializer.errors
+                })
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            })
+
+    def delete(self, request, id):
+        try:
+            data = Order.objects.get(id=id)
+            if data:
+                return Response({
+                    "message": "Order Deleted"
+                }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "message": str(e)
             }, status=status.HTTP_404_NOT_FOUND)

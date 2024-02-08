@@ -49,11 +49,14 @@ const Cart = () => {
       localStorage.setItem("cart", cartleng);
     }
   }, [cartItems]);
-  const totalOffers = cartItems[0]?.reduce(
-    (totalOffer, item) => totalOffer + item.product.offer,
-    0
+  const totalOffers = Math.floor(
+    cartItems[0]?.reduce(
+      (totalOffer, item) => totalOffer + item.product.offer,
+      0
+    )
   );
-  const averageOfferPercent = totalOffers / cartItems[0]?.length;
+  
+  const averageOfferPercent = Math.floor(totalOffers / cartItems[0]?.length);
   const totalPrice = cartItems[0]?.reduce(
     (tprice, item) => tprice + item.price,
     0
@@ -279,7 +282,7 @@ const Cart = () => {
                         </small>
                       </span>
                     </p>
-                    <Link className="flex justify-center items-center mt-5" to={`/address/${totalOffers}/${totalPrice}/${todaysDeal}`}>
+                    <Link className="flex justify-center items-center mt-5" to={`/address/${averageOfferPercent}/${totalPrice}/${todaysDeal}`}>
 
 
                     {/* <Link className="flex justify-center items-center mt-5" to={{pathname:'/address',state:{states}}}> */}

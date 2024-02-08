@@ -68,3 +68,26 @@ class DeliveryAddressSerializer_put(serializers.ModelSerializer):
         model = DeliveryAddress
         fields = ['id', 'user', 'mob1', 'mob2', 'postalcode', 'address',
                   'area', 'landmark', 'city', 'state']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = "__all__"
+
+
+class OrderSerializer_patch(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['status']
+
+
+class OrderSerializer_get(serializers.ModelSerializer):
+    user = UserSerializer()
+    cart = CartSerializer_get()
+    address = DeliveryAddressSerializer_get()
+
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'cart',  'address',
+                  'total', 'date', 'status']

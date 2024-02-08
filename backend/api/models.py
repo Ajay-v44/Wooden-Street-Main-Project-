@@ -49,6 +49,9 @@ class Cart(models.Model):
     price = models.IntegerField()
     qty = models.IntegerField(default=1)
 
+    def __str__(self):
+        return self.product_name
+
     class Meta:
         db_table = 'Cart'
 
@@ -71,6 +74,9 @@ class DeliveryAddress(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.address
+
     class Meta:
         db_table = 'DeliveryAddress'
 
@@ -82,10 +88,22 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
     search_fields = ['postalcode', 'area', 'landmark', 'city', 'state']
     list_filter = ['postalcode', 'area', 'landmark', 'city', 'state']
 
+
 class Order(models.Model):
-    cart=models.ForeignKey(Cart, on_delete=models.CASCADE)
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
+    total = models.IntegerField()
+    date = models.DateField(auto_now=True)
+    status = models.CharField(max_length=50, default='confirmed')
 
-    Total=models.IntegerField()
+    def __str__(self):
+        return self.status
 
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'cart_id',  'address_id',
+                    'total', 'date', 'status')
+    search_fields = ['date', 'status']
+    list_filter = ['date', 'status']
