@@ -62,8 +62,8 @@ class CartAdmin(admin.ModelAdmin):
 
 class DeliveryAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    mob1 = models.IntegerField()
-    mob2 = models.IntegerField(blank=True)
+    mob1 = models.BigIntegerField()
+    mob2 = models.BigIntegerField(blank=True)
     postalcode = models.IntegerField()
     address = models.CharField(max_length=150)
     area = models.CharField(max_length=150)
@@ -81,3 +81,11 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
                     'area', 'landmark', 'city', 'state')
     search_fields = ['postalcode', 'area', 'landmark', 'city', 'state']
     list_filter = ['postalcode', 'area', 'landmark', 'city', 'state']
+
+class Order(models.Model):
+    cart=models.ForeignKey(Cart, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+
+    Total=models.IntegerField()
+
