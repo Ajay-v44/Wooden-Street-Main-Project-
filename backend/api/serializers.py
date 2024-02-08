@@ -59,12 +59,12 @@ class DeliveryAddressSerializer_get(serializers.ModelSerializer):
 
     class Meta:
         model = DeliveryAddress
-        fields = ['user', 'mob1', 'mob2', 'postalcode', 'address',
+        fields = ['id', 'user', 'mob1', 'mob2', 'postalcode', 'address',
                   'area', 'landmark', 'city', 'state']
 
 
 class DeliveryAddressSerializer_put(serializers.ModelSerializer):
     class Meta:
         model = DeliveryAddress
-        fields = ['user', 'mob1', 'mob2', 'postalcode', 'address',
+        fields = ['id', 'user', 'mob1', 'mob2', 'postalcode', 'address',
                   'area', 'landmark', 'city', 'state']

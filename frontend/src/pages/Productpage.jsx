@@ -48,17 +48,17 @@ const Productpage = () => {
     <>
       {loading ? (
         <div className=" p-10 flex justify-center flex-col items-center ">
-          <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
-            <div class="animate-pulse flex space-x-4">
-              <div class="rounded-full bg-slate-700 h-10 w-10"></div>
-              <div class="flex-1 space-y-6 py-1">
-                <div class="h-2 bg-slate-700 rounded"></div>
-                <div class="space-y-3">
-                  <div class="grid grid-cols-3 gap-4">
-                    <div class="h-2 bg-slate-700 rounded col-span-2"></div>
-                    <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+          <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+            <div className="animate-pulse flex space-x-4">
+              <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+              <div className="flex-1 space-y-6 py-1">
+                <div className="h-2 bg-slate-700 rounded"></div>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                    <div className="h-2 bg-slate-700 rounded col-span-1"></div>
                   </div>
-                  <div class="h-2 bg-slate-700 rounded"></div>
+                  <div className="h-2 bg-slate-700 rounded"></div>
                 </div>
               </div>
             </div>
@@ -66,12 +66,12 @@ const Productpage = () => {
           <button
             disabled
             type="button"
-            class="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+            className="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
           >
             <svg
               aria-hidden="true"
               role="status"
-              class="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
+              className="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

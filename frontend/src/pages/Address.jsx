@@ -22,65 +22,140 @@ const Address = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
-
     const getMethod = async () => {
-        try {
-            setLoading(true)
-            const response = await axios.get(`/api/address/${id}/`, {
-                headers: {
-                    Authorization: `Token ${token}`,
-                },
-                withCredentials: true,
-            });
-           setMethod('put')
-           Setdata({
-            mob1: response.data[0].mob1,
-            mob2: response.data[0].mob2,
-            postalcode: response.data[0].postalcode,
-            society: response.data[0].address,
-            area: response.data[0].area,
-            landmark:response.data[0].landmark,
-            city: response.data[0].city,
-            state: response.data[0].state,
-          })
-           setLoading(false)
-        } catch (error) {
-            setLoading(false)
-            console.error(error);
-            setMethod('post');
-           
-        }
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/address/${id}/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          withCredentials: true,
+        });
+        setMethod("put");
+        Setdata({
+          mob1: response.data[0].mob1,
+          mob2: response.data[0].mob2,
+          postalcode: response.data[0].postalcode,
+          society: response.data[0].address,
+          area: response.data[0].area,
+          landmark: response.data[0].landmark,
+          city: response.data[0].city,
+          state: response.data[0].state,
+        });
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+        setMethod("post");
+      }
     };
     getMethod();
-}, []);
-  const handleOnChange=(e)=>{
-    let name=e.target.name
-    let value=e.target.value
-    Setdata((prev)=>{
-        return {...prev,[name]:value}
-    })
-  }
-  const handleOnSubmit=async (e)=>{
+  }, []);
+  const handleOnChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    Setdata((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(data)
-
-  }
+    try {
+      if (method == "post") {
+        setLoading(true);
+        const response = await axios.post(
+          "/api/address/",
+          {
+            user: localStorage.getItem("id"),
+            mob1: data.mob1,
+            mob2: data.mob2,
+            postalcode: data.postalcode,
+            address: data.society,
+            area: data.area,
+            landmark: data.landmark,
+            city: data.city,
+            state: data.state,
+          },
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(response.data.mob1);
+        Setdata({
+          mob1: response.data.mob1,
+          mob2: response.data.mob2,
+          postalcode: response.data.postalcode,
+          society: response.data.address,
+          area: response.data.area,
+          landmark: response.data.landmark,
+          city: response.data.city,
+          state: response.data.state,
+        });
+        setLoading(false);
+        toast.success("Adress added successfully");
+      } else if (method == "put") {
+        setLoading(true);
+        const response = await axios.put(
+          `/api/address/${localStorage.getItem("id")}/`,
+          {
+            mob1: data.mob1,
+            mob2: data.mob2,
+            postalcode: data.postalcode,
+            address: data.society,
+            area: data.area,
+            landmark: data.landmark,
+            city: data.city,
+            state: data.state,
+          },
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          }
+        );
+        Setdata({
+          mob1: response.data.mob1,
+          mob2: response.data.mob2,
+          postalcode: response.data.postalcode,
+          society: response.data.address,
+          area: response.data.area,
+          landmark: response.data.landmark,
+          city: response.data.city,
+          state: response.data.state,
+        });
+        setLoading(false);
+        toast.success("Updated Successfully ");
+      } else {
+        toast.warning("Something went wrong");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      if (response.data.message) {
+        toast.error(response.data.message);
+      }
+    }
+  };
   return (
     <>
       {loading ? (
         <>
           <div className=" p-10 flex justify-center flex-col items-center ">
-            <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
-              <div class="animate-pulse flex space-x-4">
-                <div class="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div class="flex-1 space-y-6 py-1">
-                  <div class="h-2 bg-slate-700 rounded"></div>
-                  <div class="space-y-3">
-                    <div class="grid grid-cols-3 gap-4">
-                      <div class="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+            <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+              <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+                <div className="flex-1 space-y-6 py-1">
+                  <div className="h-2 bg-slate-700 rounded"></div>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
                     </div>
-                    <div class="h-2 bg-slate-700 rounded"></div>
+                    <div className="h-2 bg-slate-700 rounded"></div>
                   </div>
                 </div>
               </div>
@@ -88,12 +163,12 @@ const Address = () => {
             <button
               disabled
               type="button"
-              class="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+              className="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
                 role="status"
-                class="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
+                className="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +189,10 @@ const Address = () => {
       ) : (
         <>
           <div className=" x-10 md:px-20 pt-5 pb-5  flex flex-col md:flex-row justify-center items-center gap-5 md:gap-10 ">
-            <form className="bg-white border p-3 border-orange-400 shadow-sm w-96 md:w-[35rem] rounded-md" onSubmit={handleOnSubmit}>
+            <form
+              className="bg-white border p-3 border-orange-400 shadow-sm w-96 md:w-[35rem] rounded-md"
+              onSubmit={handleOnSubmit}
+            >
               <p className="text-lg font-medium">Delivery & Billing Address</p>
               <hr className="pt-3 pb-3" />
               <div className="flex justify-start gap-10 items-center text-gray-500 pb-3">
@@ -163,7 +241,6 @@ const Address = () => {
                   name="society"
                   id=""
                   value={data.society}
-
                   onChange={handleOnChange}
                   className="w-56 md:w-96"
                   placeholder="Flat,House no,Building,Company,Appartment"
@@ -178,7 +255,6 @@ const Address = () => {
                   id=""
                   onChange={handleOnChange}
                   value={data.area}
-
                   className="w-56 md:w-96"
                   placeholder="Area,Street,Sector,Village"
                   required
@@ -192,7 +268,6 @@ const Address = () => {
                   id=""
                   onChange={handleOnChange}
                   value={data.landmark}
-
                   className="w-56 md:w-96"
                   placeholder="Landmark"
                   required
@@ -206,7 +281,6 @@ const Address = () => {
                   id=""
                   onChange={handleOnChange}
                   value={data.city}
-
                   className="w-56 md:w-96"
                   placeholder="City"
                   required
@@ -219,7 +293,6 @@ const Address = () => {
                   id=""
                   onChange={handleOnChange}
                   value={data.state}
-
                   className="w-56 md:w-96 h-10 text-center"
                   required
                 >

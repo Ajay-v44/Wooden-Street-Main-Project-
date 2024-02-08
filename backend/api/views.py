@@ -204,10 +204,7 @@ class DeliveryAddresss(APIView):
             serializer = DeliveryAddressSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response({
-                    "message": "Succesfully Added",
-
-                }, status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({
                     "message": "Sorry error occured try again",
@@ -245,11 +242,9 @@ class DeliveryAddresss(APIView):
                 instance, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({
-                    "data": serializer.data,
-                    "message": "Updated",
-                    "status": status.HTTP_202_ACCEPTED
-                })
+                return Response(serializer.data,
+                                status.HTTP_202_ACCEPTED
+                                )
             else:
                 return Response({
                     "message": "Try again",

@@ -91,17 +91,17 @@ const Cart = () => {
       {loading ? (
         <>
           <div className=" p-10 flex justify-center flex-col items-center ">
-            <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
-              <div class="animate-pulse flex space-x-4">
-                <div class="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div class="flex-1 space-y-6 py-1">
-                  <div class="h-2 bg-slate-700 rounded"></div>
-                  <div class="space-y-3">
-                    <div class="grid grid-cols-3 gap-4">
-                      <div class="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div class="h-2 bg-slate-700 rounded col-span-1"></div>
+            <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+              <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+                <div className="flex-1 space-y-6 py-1">
+                  <div className="h-2 bg-slate-700 rounded"></div>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
                     </div>
-                    <div class="h-2 bg-slate-700 rounded"></div>
+                    <div className="h-2 bg-slate-700 rounded"></div>
                   </div>
                 </div>
               </div>
@@ -109,12 +109,12 @@ const Cart = () => {
             <button
               disabled
               type="button"
-              class="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+              className="py-2.5  mt-5 px-5 me-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
                 role="status"
-                class="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
+                className="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -151,10 +151,10 @@ const Cart = () => {
                           />
                           Deliver to
                         </span>
-                        <div class="relative w-60 ">
-                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <div className="relative w-60 ">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg
-                              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                              className="w-4 h-4 text-gray-500 dark:text-gray-400"
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -172,13 +172,13 @@ const Cart = () => {
                           <input
                             type="search"
                             id="default-search"
-                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-10"
+                            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-10"
                             placeholder="Enter location"
                             required
                           />
                           <button
                             type="submit"
-                            class="text-white absolute end-1 bottom-1  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="text-white absolute end-1 bottom-1  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Search
                           </button>
