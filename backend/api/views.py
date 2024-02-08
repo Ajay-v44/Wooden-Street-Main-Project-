@@ -275,7 +275,7 @@ class OrderView(APIView):
                 order = Order.objects.create(
                     user=user,
                     address=address,
-                    cart=item,
+                    product=item.product,
                     total=total
                 )
                 orders.append(order)

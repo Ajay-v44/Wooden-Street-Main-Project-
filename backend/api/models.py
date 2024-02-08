@@ -90,7 +90,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
 
 
 class Order(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
     total = models.IntegerField()
@@ -103,7 +103,7 @@ class Order(models.Model):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'cart_id',  'address_id',
+    list_display = ('user_id', 'product_id',  'address_id',
                     'total', 'date', 'status')
     search_fields = ['date', 'status']
     list_filter = ['date', 'status']

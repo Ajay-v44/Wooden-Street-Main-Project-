@@ -85,10 +85,10 @@ class OrderSerializer_patch(serializers.ModelSerializer):
 
 class OrderSerializer_get(serializers.ModelSerializer):
     user = UserSerializer()
-    cart = CartSerializer_get()
+    product=ProductSerializer()
     address = DeliveryAddressSerializer_get()
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'cart',  'address',
+        fields = ['id', 'user', 'product',  'address',
                   'total', 'date', 'status']
