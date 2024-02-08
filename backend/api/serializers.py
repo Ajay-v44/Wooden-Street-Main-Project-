@@ -51,7 +51,8 @@ class CartSerializer_patch(serializers.ModelSerializer):
 class DeliveryAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeliveryAddress
-        fields = "__all__"
+        fields = ['id', 'user', 'mob1', 'mob2', 'postalcode', 'address',
+                  'area', 'landmark', 'city', 'state']
 
 
 class DeliveryAddressSerializer_get(serializers.ModelSerializer):

@@ -276,7 +276,7 @@ class OrderView(APIView):
                     user=user,
                     address=address,
                     cart=item,
-                    total=item.price
+                    total=total
                 )
                 orders.append(order)
             return Response({

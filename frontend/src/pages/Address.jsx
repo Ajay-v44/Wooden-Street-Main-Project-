@@ -10,6 +10,7 @@ const Address = () => {
   const [method, setMethod] = useState(null);
   const [loading, setLoading] = useState(null);
   const [data, Setdata] = useState({
+    id: "",
     mob1: "",
     mob2: "",
     postalcode: "",
@@ -33,6 +34,7 @@ const Address = () => {
         });
         setMethod("put");
         Setdata({
+          id:response.data[0].id,
           mob1: response.data[0].mob1,
           mob2: response.data[0].mob2,
           postalcode: response.data[0].postalcode,
@@ -85,6 +87,7 @@ const Address = () => {
         );
         console.log(response.data.mob1);
         Setdata({
+          id: response.data.id,
           mob1: response.data.mob1,
           mob2: response.data.mob2,
           postalcode: response.data.postalcode,
@@ -118,6 +121,7 @@ const Address = () => {
           }
         );
         Setdata({
+          id: response.data.id,
           mob1: response.data.mob1,
           mob2: response.data.mob2,
           postalcode: response.data.postalcode,
@@ -138,6 +142,45 @@ const Address = () => {
       if (response.data.message) {
         toast.error(response.data.message);
       }
+    }
+  };
+  const handleOrder = async () => {
+    try {
+      if (
+        !data.mob1 ||
+        !data.mob2 ||
+        !data.postalcode ||
+        !data.society ||
+        !data.state ||
+        !data.city ||
+        !data.area ||
+        !data.landmark
+      ) {
+        toast.warning("Fill You Address !");
+      } else {
+        setLoading(true);
+        const response = await axios.post(
+          "/api/order/",
+          {
+            cart: 0,
+            user: localStorage.getItem("id"),
+            address: data.id,
+            total: totalprice,
+          },
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+            withCredentials: true,
+          }
+        );
+        setLoading(false);
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Sorry unexpected error occured .please try again");
+      console.log(error);
     }
   };
   return (
@@ -380,7 +423,10 @@ const Address = () => {
                 </span>
               </p>
               <div className="flex justify-center items-center mt-5">
-                <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
+                <button
+                  className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 "
+                  onClick={handleOrder}
+                >
                   <FontAwesomeIcon icon={faBuyNLarge} className="pr-3" /> Buy
                   Now
                 </button>
