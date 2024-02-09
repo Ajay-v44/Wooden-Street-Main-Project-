@@ -3,15 +3,49 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
+import axios from "axios";
 
 const UserProfile = () => {
+  const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [value, setvalue] = useState("confirmed");
   useEffect(() => {
     if (!localStorage.getItem("id") || !localStorage.getItem("token")) {
       navigate("/login");
+    } else {
+      try {
+        const getItems = async () => {
+          setLoading(true);
+          const response = await axios.get(
+            `/api/order/${localStorage.getItem("id")}/`,
+            {
+              headers: {
+                Authorization: `Token ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const newdata = response.data.filter((item) => item.status === value);
+          setData(newdata);
+          setLoading(false);
+        };
+        getItems();
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
     }
-  }, [localStorage.getItem("id"), localStorage.getItem("token")]);
+  }, [localStorage.getItem("id"), localStorage.getItem("token"), value]);
+  const handleOnclick = (val) => {
+    try {
+      console.log(data);
+      setvalue(val);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -21,84 +55,101 @@ const UserProfile = () => {
       ) : (
         <>
           <div className="pt-5 pb-5 px-10 md:px-14 flex flex-row gap-10 ">
-            <div className="shadow-lg p-2 w-72 h-40 ">
+            <div className="shadow-lg p-2 w-72 h-60 ">
               <p className="text-lg md:text-xl font-semibold pl-5 pb-2">
                 Filter
               </p>
               <hr />
-              <h1 className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg">
+              <h1
+                className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg"
+                onClick={() => {
+                  handleOnclick("confirmed");
+                }}
+              >
+                Ordered
+              </h1>
+              <h1
+                className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg"
+                onClick={() => {
+                  handleOnclick("dispatched");
+                }}
+              >
+                Dispatched
+              </h1>
+              <h1
+                className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg"
+                onClick={() => {
+                  handleOnclick("delivered");
+                }}
+              >
                 Delivered
               </h1>
-              <h1 className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg">
+
+              <h1
+                className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg"
+                onClick={() => {
+                  handleOnclick("cancled");
+                }}
+              >
                 Canceled
               </h1>
             </div>
 
             <div className="pt-3 pb-3 px-5 md:pb-10 flex flex-col justify-between items-center gap-5">
-              {/* cards */}
-              <Link
-                to={"/detailorder"}
-                className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10"
-              >
-                <img
-                  src="https://rukminim2.flixcart.com/image/jxxkvww0/shoe/r/x/5/15545-6-walkaroo-black-grey-original-imafga85stnhaugk.jpeg"
-                  alt=""
-                  className="w-32 md:w-52"
-                />
-                <div>
-                  <h1 className="capitalize text-sm font-semibold">
-                    Walkaroo Walking shoe for men
-                  </h1>
-                  <small className="text-gray-400">Brand: walkaro</small>
-                </div>
-                <h1 className=" text-sm font-semibold"> RS 1000</h1>
-                <div className="flex flex-col items-center">
-                  <h1 className=" text-sm font-semibold">
-                    <FontAwesomeIcon
-                      icon={faCircle}
-                      className="text-green-500 pr-3"
-                    />
-                    Ordered On
-                  </h1>
-                  <span>08/02/2024</span>
-                </div>
-                <button className="bg-red-500 text-white p-1 rounded-lg">
-                  <FontAwesomeIcon icon={faTrash} className="px-2" />
-                  cancel
-                </button>
-              </Link>
-              {/* end cards */}
-              {/* cards */}
-              <div className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10">
-                <img
-                  src="https://rukminim2.flixcart.com/image/jxxkvww0/shoe/r/x/5/15545-6-walkaroo-black-grey-original-imafga85stnhaugk.jpeg"
-                  alt=""
-                  className="w-32 md:w-52"
-                />
-                <div>
-                  <h1 className="capitalize text-sm font-semibold">
-                    Walkaroo Walking shoe for men
-                  </h1>
-                  <small className="text-gray-400">Brand: walkaro</small>
-                </div>
-                <h1 className=" text-sm font-semibold"> RS 1000</h1>
-                <div className="flex flex-col items-center">
-                  <h1 className=" text-sm font-semibold">
-                    <FontAwesomeIcon
-                      icon={faCircle}
-                      className="text-green-500 pr-3"
-                    />
-                    Ordered On
-                  </h1>
-                  <span>08/02/2024</span>
-                </div>
-                <button className="bg-red-500 text-white p-1 rounded-lg">
-                  <FontAwesomeIcon icon={faTrash} className="px-2" />
-                  cancel
-                </button>
-              </div>
+              {data.length>0?<>
+              
+              
+                {
+                data?.map((item) => (
+                  <>
+                    {/* cards */}
+                    <Link
+                      to={"/detailorder"}
+                      className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10"
+                    >
+                      <img
+                        src={url+item.product.img1}
+                        alt=""
+                        className="w-32 md:w-52"
+                      />
+                      <div>
+                        <h1 className="capitalize text-sm font-semibold">
+                         {item.product.pname}
+                        </h1>
+                        <small className="text-gray-400">Brand:  {item.product.brand}</small>
+                      </div>
+                      <div className="flex flex-col text-sm font-semibold"> RS {item.total}
+                      <small>Total <sub>* including all orders in this single purchase</sub>
+                      </small>
+                      </div>
 
-              {/* end cards */}
+                      <div className="flex flex-col items-center">
+                        <h1 className=" text-sm font-semibold">
+                          <FontAwesomeIcon
+                            icon={faCircle}
+                            className="text-green-500 pr-3"
+                          />
+                          Ordered On
+                        </h1>
+                        <span>{item.date}</span>
+                      </div>
+                      {item.status=="cancled"||<button className="bg-red-500 text-white p-1 rounded-lg">
+                        <FontAwesomeIcon icon={faTrash} className="px-2" />
+                        cancel
+                      </button>}
+                    </Link>
+                    {/* end cards */}
+                  </>
+
+              ))}
+              </>:<>
+              
+              <div className="flex justify-center items-center bg-white rounded-md shadow-lg h-48 mt-10 md:mt-20 ">
+                <img src="https://study91.co.in/Scripts/assets/images/prasad_img/no-product-found.png" alt="" className="w-auto" />
+
+              </div>
+              
+              </>}
             </div>
           </div>
         </>

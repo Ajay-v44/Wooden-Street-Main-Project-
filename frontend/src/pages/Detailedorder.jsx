@@ -99,29 +99,27 @@ const Detailedorder = () => {
                 icon={faCircle}
                 className="text-green-500 pr-3"
               />
-              Ordered On  <span className="px-5">08/02/2024</span>
+              Ordered On <span className="px-5">08/02/2024</span>
             </h1>
-           
           </div>
           <div className="p-1 border rounded border-green-400 w-24 mx-3">
             <h2 className="text-lg text-center">Orderd</h2>
-
-            
-
           </div>
-
         </div>
-       
+
         {/* end cards */}
 
-       <p className="text-lg text-orange-500 ">Status</p>
-  <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-   
-    <div className="bg-red-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width:"15%"}}> ordered</div>
-  </div>
-
+        <p className="text-lg text-orange-500 ">Status</p>
+        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+          <div
+            className="bg-red-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+            style={{ width: "15%" }}
+          >
+            {" "}
+            ordered
+          </div>
+        </div>
       </div>
-
     </div>
   );
 };

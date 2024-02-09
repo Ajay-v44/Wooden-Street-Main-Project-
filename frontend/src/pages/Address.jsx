@@ -2,11 +2,12 @@ import { faBuyNLarge } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Notification from "../components/Notification";
 
 const Address = () => {
+  const navigate=useNavigate()
   const { totaloffer, totalprice, todaydeal } = useParams();
   const [method, setMethod] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -166,7 +167,7 @@ const Address = () => {
             cart: 0,
             user: localStorage.getItem("id"),
             address: data.id,
-            total: totalprice,
+            total: Number(totalprice) - Number(todaydeal),
           },
           {
             headers: {
@@ -177,7 +178,8 @@ const Address = () => {
         );
         setLoading(false);
         toast.success(response.data.message);
-        <Notification message={response.data.message} />
+        navigate('/userprofile');
+        <Notification message={response.data.message} />;
       }
     } catch (error) {
       setLoading(false);
@@ -250,6 +252,8 @@ const Address = () => {
                   placeholder="95XXXXXX09"
                   onChange={handleOnChange}
                   value={data.mob1}
+                  minLength={10}
+                  maxLength={10}
                   required
                 />
               </div>
@@ -263,6 +267,8 @@ const Address = () => {
                   onChange={handleOnChange}
                   className="w-56 md:w-96"
                   placeholder="95XXXXXX09"
+                  minLength={10}
+                  maxLength={10}
                   required
                 />
               </div>
@@ -276,7 +282,9 @@ const Address = () => {
                   value={data.postalcode}
                   className="w-56 md:w-96"
                   placeholder="Enter PinCode"
-                  rel=""
+                  minLength={6}
+                  maxLength={6}
+                  required
                 />
               </div>
               <div className="flex justify-start gap-[4.5rem] items-center text-gray-500 pb-3">
