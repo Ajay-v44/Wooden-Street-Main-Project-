@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django.core.validators import MaxValueValidator
+from django import forms
 # Create your models here.
 
 
@@ -107,3 +108,8 @@ class OrderAdmin(admin.ModelAdmin):
                     'total', 'date', 'status')
     search_fields = ['date', 'status']
     list_filter = ['date', 'status']
+    list_editable=['status']
+    formfield_overrides = {
+        models.CharField: {'widget': forms.Select(choices=[('dispatched', 'dispatched'), ('delivered', 'delivered')])},
+    }
+

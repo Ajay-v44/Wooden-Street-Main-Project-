@@ -46,7 +46,7 @@ function App() {
           path="/address/:totaloffer/:totalprice/:todaydeal"
           element={<Address />}
         />
-        <Route path="/detailorder" element={<Detailedorder />} />
+        <Route path="/detailorder/:id" element={<Detailedorder />} />
       </Routes>
       <Footer />
     </BrowserRouter>

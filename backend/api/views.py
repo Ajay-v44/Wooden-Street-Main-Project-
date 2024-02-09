@@ -297,7 +297,6 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             }, status=status.HTTP_404_NOT_FOUND)
-
     def patch(self, request, id):
         try:
             instance = Order.objects.get(id=id)
@@ -318,10 +317,9 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             })
-
     def delete(self, request, id):
         try:
-            data = Order.objects.get(id=id)
+            data = Order.objects.get(id=id).delete()
             if data:
                 return Response({
                     "message": "Order Deleted"
@@ -330,3 +328,17 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             }, status=status.HTTP_404_NOT_FOUND)
+      
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication]) 
+@permission_classes([IsAuthenticated])
+def getDetailedOrder(request, id):
+        try:
+            data = Order.objects.filter(id=id)
+            serializer = OrderSerializer_get(data, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)
+        
