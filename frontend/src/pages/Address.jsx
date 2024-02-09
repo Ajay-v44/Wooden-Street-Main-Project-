@@ -34,7 +34,7 @@ const Address = () => {
         });
         setMethod("put");
         Setdata({
-          id:response.data[0].id,
+          id: response.data[0].id,
           mob1: response.data[0].mob1,
           mob2: response.data[0].mob2,
           postalcode: response.data[0].postalcode,

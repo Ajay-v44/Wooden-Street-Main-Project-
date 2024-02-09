@@ -193,22 +193,13 @@ const Header = () => {
             id="dropdownDelay"
             className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
           >
-            <ul
-              className="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownDelayButton"
-            >
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Dashboard
-                </a>
-              </li>
+           
+             
               {token ? (
                 ""
               ) : (
-                <>
+                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownDelayButton">
                   <li>
                     <Link
                       to={"/login"}
@@ -225,9 +216,9 @@ const Header = () => {
                       Register
                     </Link>
                   </li>
-                </>
+                </ul>
               )}
-            </ul>
+            
           </div>
 
           <Link

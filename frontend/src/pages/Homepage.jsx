@@ -1484,10 +1484,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72"
                         src="/images/r1.webp"
                         alt="Image"
-                        className="w-72 "
+                        
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-10 px-5 text-justify text-xs md:text-lg ">
@@ -1506,10 +1506,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72 "
                         src="/images/r2.webp"
                         alt="Image"
-                        className="w-72 "
+                        
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-14 px-5 text-justify text-xs md:text-lg ">
@@ -1528,10 +1528,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72 "
                         src="/images/dd1.webp"
                         alt="Image"
-                        className="w-72 "
+                       
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-14 px-5 text-justify text-xs md:text-lg ">
@@ -1557,10 +1557,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72 "
                         src="/images/dd1.webp"
                         alt="Image"
-                        className="w-72 "
+                       
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-14 px-5 text-justify text-xs md:text-lg ">
@@ -1579,10 +1579,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72 "
                         src="/images/dd1.webp"
                         alt="Image"
-                        className="w-72 "
+                      
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-14 px-5 text-justify text-xs md:text-lg ">
@@ -1601,10 +1601,10 @@ const Homepage = () => {
                   <div className="relative w-48 md:w-[25rem] h-96 md:h-[30rem] overflow-hidden cursor-pointer bg-white p-2">
                     <div className="flex justify-center items-center">
                       <img
-                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105"
+                        className="object-cover rounded-md transition-transform transform-gpu hover:scale-105 w-72 "
                         src="/images/dd1.webp"
                         alt="Image"
-                        className="w-72 "
+                        
                       />
                     </div>
                     <p className="overflow-hidden pt-0 md:pt-14 px-5 text-justify text-xs md:text-lg ">
