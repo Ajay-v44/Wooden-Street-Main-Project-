@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import Address from "./pages/Address";
+import Detailedorder from "./pages/Detailedorder";
 function App() {
   return (
     <BrowserRouter>
@@ -41,7 +42,11 @@ function App() {
         <Route path="/dtproduct/:id" element={<DetaileProduct />} />
         <Route path="/products/:id" element={<Productpage />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/address/:totaloffer/:totalprice/:todaydeal" element={<Address />} />
+        <Route
+          path="/address/:totaloffer/:totalprice/:todaydeal"
+          element={<Address />}
+        />
+        <Route path="/detailorder" element={<Detailedorder />} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -1,7 +1,7 @@
 import { faCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
 const UserProfile = () => {
@@ -36,7 +36,10 @@ const UserProfile = () => {
 
             <div className="pt-3 pb-3 px-5 md:pb-10 flex flex-col justify-between items-center gap-5">
               {/* cards */}
-              <div className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10">
+              <Link
+                to={"/detailorder"}
+                className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10"
+              >
                 <img
                   src="https://rukminim2.flixcart.com/image/jxxkvww0/shoe/r/x/5/15545-6-walkaroo-black-grey-original-imafga85stnhaugk.jpeg"
                   alt=""
@@ -63,8 +66,7 @@ const UserProfile = () => {
                   <FontAwesomeIcon icon={faTrash} className="px-2" />
                   cancel
                 </button>
-              </div>
-
+              </Link>
               {/* end cards */}
               {/* cards */}
               <div className="shadow-md border rounded-md p-2 flex items-center hover:border-orange-400 cursor-pointer gap-10">

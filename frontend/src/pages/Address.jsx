@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import Notification from "../components/Notification";
 
 const Address = () => {
   const { totaloffer, totalprice, todaydeal } = useParams();
@@ -176,6 +177,7 @@ const Address = () => {
         );
         setLoading(false);
         toast.success(response.data.message);
+        <Notification message={response.data.message} />
       }
     } catch (error) {
       setLoading(false);
