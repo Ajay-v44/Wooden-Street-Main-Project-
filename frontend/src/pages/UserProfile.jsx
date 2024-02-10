@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Modal from "../components/Modal";
 const UserProfile = () => {
   const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
@@ -167,10 +168,9 @@ const UserProfile = () => {
                       {item.status !== "dispatched" &&
                         item.status !== "cancled" &&
                         item.status !== "delivered" && (
-                          <button className="bg-red-500 text-white p-1 rounded-lg ">
-                            <FontAwesomeIcon icon={faTrash} className="px-2" />
-                            Cancel
-                          </button>
+                          <>
+                            <Modal id={item.id} />
+                          </>
                         )}
                       {/* end cards */}
                     </div>

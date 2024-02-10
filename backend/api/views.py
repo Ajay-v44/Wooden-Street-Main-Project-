@@ -16,6 +16,7 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import rotate_token
 from rest_framework.generics import get_object_or_404
+from .Uniquecode import generate_unique_id
 
 
 @api_view(['GET'])
@@ -267,6 +268,7 @@ class OrderView(APIView):
             user_id = data.get("user")
             address_id = data.get("address")
             total = data.get("total", 0)
+            oid = generate_unique_id()
             cart = Cart.objects.filter(user=user_id)
             user = User.objects.get(id=user_id)
             address = DeliveryAddress.objects.get(id=address_id)
@@ -276,7 +278,8 @@ class OrderView(APIView):
                     user=user,
                     address=address,
                     product=item.product,
-                    total=total
+                    total=total,
+                    order_id=oid
                 )
                 orders.append(order)
             return Response({
@@ -297,6 +300,7 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             }, status=status.HTTP_404_NOT_FOUND)
+
     def patch(self, request, id):
         try:
             instance = Order.objects.get(id=id)
@@ -317,6 +321,7 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             })
+
     def delete(self, request, id):
         try:
             data = Order.objects.get(id=id).delete()
@@ -328,17 +333,45 @@ class OrderView(APIView):
             return Response({
                 "message": str(e)
             }, status=status.HTTP_404_NOT_FOUND)
-      
+
+
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication]) 
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def getDetailedOrder(request, id):
+    try:
+
+        data = Order.objects.filter(id=id)
+        serializer = OrderSerializer_get(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "message": str(e)
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+class CancelOrderView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, oid):
         try:
-            data = Order.objects.filter(id=id)
-            serializer = OrderSerializer_get(data, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            print(oid)
+            order = get_object_or_404(Order, id=request.data["order"])
+            product = get_object_or_404(Products, pname=order.product)
+            reduction = int(
+                product.price-((product.price * product.offer) / 100))
+            newpeice = order.total-reduction
+            Order.objects.filter(order_id=oid).update(total=newpeice)
+            serializer = CancelItemSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "message": "Cancel Request Have Been Initiate."
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    "message": serializer.errors
+                }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({
-                "message": str(e)
-            }, status=status.HTTP_404_NOT_FOUND)
-        
+            return Response(str(e))

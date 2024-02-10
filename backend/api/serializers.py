@@ -85,10 +85,16 @@ class OrderSerializer_patch(serializers.ModelSerializer):
 
 class OrderSerializer_get(serializers.ModelSerializer):
     user = UserSerializer()
-    product=ProductSerializer()
+    product = ProductSerializer()
     address = DeliveryAddressSerializer_get()
 
     class Meta:
         model = Order
         fields = ['id', 'user', 'product',  'address',
-                  'total', 'date', 'status']
+                  'total', 'date', 'status', 'order_id']
+
+
+class CancelItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CancelItem
+        fields = "__all__"

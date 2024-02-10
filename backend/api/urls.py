@@ -22,5 +22,6 @@ urlpatterns = [
     path('order/', OrderView.as_view(), name='order'),
     path('order/<int:id>/', OrderView.as_view(), name='order'),
     path('dtorder/<int:id>/', getDetailedOrder, name='dtorder'),
+    path('cancel/<str:oid>/', CancelOrderView.as_view(), name='cancel')
 
 ]
