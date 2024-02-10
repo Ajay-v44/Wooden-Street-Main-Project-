@@ -1,11 +1,39 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-const Modal = ({ id }) => {
+const Modal = ({ id, order_id }) => {
+  const [input, setinput] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
+  const handleOnclick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `/api/cancel/${order_id}/`,
+        {
+          order: id,
+          reason: input,
+        },
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      );
+      
+      if (response.data.message) {
+        setinput("")
+        toast.warning(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Sorry Try Again");
+      console.log(error);
+    }
+  };
   return (
     <>
       <button
@@ -57,7 +85,7 @@ const Modal = ({ id }) => {
               </button>
             </div>
             {/* Modal body */}
-            <form className="p-4 md:p-5">
+            <form className="p-4 md:p-5" onSubmit={handleOnclick}>
               {/* Form fields */}
               <div className="col-span-2">
                 <label
@@ -68,7 +96,11 @@ const Modal = ({ id }) => {
                 </label>
                 <textarea
                   id="description"
+                  value={input}
                   rows="4"
+                  onChange={(e) => {
+                    setinput(e.target.value);
+                  }}
                   className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Write product cancel reason here"
                   required

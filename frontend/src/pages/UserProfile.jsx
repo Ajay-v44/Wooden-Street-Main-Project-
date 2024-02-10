@@ -169,7 +169,7 @@ const UserProfile = () => {
                         item.status !== "cancled" &&
                         item.status !== "delivered" && (
                           <>
-                            <Modal id={item.id} />
+                            <Modal id={item.id} order_id={item.order_id} />
                           </>
                         )}
                       {/* end cards */}
