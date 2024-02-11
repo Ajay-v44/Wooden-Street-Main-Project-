@@ -10,12 +10,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 const Detailedorder = () => {
   const { id } = useParams();
   const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const customername = useSelector((state)=>state.customer);
   useEffect(() => {
     if (!localStorage.getItem("id") || !localStorage.getItem("token")) {
       navigate("/login");
@@ -78,6 +79,9 @@ const Detailedorder = () => {
                     Order
                   </Link>
                 </div>
+              </div>
+              <div>
+                <h1>Welcome {customername}</h1>
               </div>
               <div className="mt-3 border-r-none md:border-r shadow-md flex flex-col md:flex-row cursor-pointer items-center justify-center gap-5 md:gap-20">
                 <div className="pt-3 pb-3 border-r px-4">

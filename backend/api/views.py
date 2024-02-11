@@ -87,7 +87,8 @@ class LoginView(APIView):
                 "message": "Welcome To Wooden Store",
                 "status": status.HTTP_200_OK,
                 "token": token.key,
-                "id": user.id
+                "id": user.id,
+                "username":username
             })
         else:
             return Response({

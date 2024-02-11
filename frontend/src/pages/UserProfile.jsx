@@ -6,11 +6,13 @@ import Loader from "../components/Loader";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
+import { useSelector } from "react-redux";
 const UserProfile = () => {
   const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const customername = useSelector((state) => state.customer);
   const [value, setvalue] = useState("confirmed");
   useEffect(() => {
     if (!localStorage.getItem("id") || !localStorage.getItem("token")) {
@@ -71,6 +73,23 @@ const UserProfile = () => {
         </>
       ) : (
         <>
+          <div className="flex justify-between items-center p-5 shadow-lg w-60 rounded-md m-2">
+            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+              <svg
+                class="absolute w-12 h-12 text-gray-400 -left-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div className="capitalize cursor-pointer text-orange-400">Welcome {customername}</div>
+          </div>
           <div className="pt-5 pb-5 px-10 md:px-14 flex flex-row gap-10 ">
             <div className="shadow-lg p-2 w-72 h-60 ">
               <p className="text-lg md:text-xl font-semibold pl-5 pb-2">

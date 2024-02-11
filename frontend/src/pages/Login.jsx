@@ -4,8 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { addCustomer } from "../slices/Customerslice";
+import {useDispatch} from 'react-redux'
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch()
   const [datas, Setdatas] = useState({
     name: "",
     password: "",
@@ -43,9 +46,10 @@ const Login = () => {
       );
       Setdatas({ name: "", password: "" });
       if (resposnse.data.status === 200) {
+        localStorage.setItem('token',resposnse.data.token)
+        localStorage.setItem('id',resposnse.data.id)
         toast.success(resposnse.data.message);
-        localStorage.setItem("token", resposnse.data.token);
-        localStorage.setItem("id", resposnse.data.id);
+        dispatch(addCustomer(resposnse.data.username))
         navigate("/");
       } else {
         toast.warning(resposnse.data.message);

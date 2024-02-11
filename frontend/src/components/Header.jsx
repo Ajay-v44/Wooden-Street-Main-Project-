@@ -19,11 +19,13 @@ import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import { useDispatch } from 'react-redux';
+import { logout } from "../slices/Customerslice";
 const Header = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [cartNumber, setCartNumber] = useState(0);
+  const dispatch = useDispatch();
   useEffect(() => {
     const getToken = () => {
       setToken(localStorage.getItem("token"));
@@ -31,11 +33,13 @@ const Header = () => {
     };
 
     getToken();
-  }, [localStorage.getItem("token"),localStorage.getItem("cart")]);
+  }, [localStorage.getItem("token"), localStorage.getItem("cart")]);
 
   axios.defaults.withCredentials = true;
 
   const handleLogout = async () => {
+    dispatch(logout(null));
+
     try {
       const response = await axios.post(
         "/api/logout/",
@@ -47,14 +51,10 @@ const Header = () => {
           withCredentials: true,
         }
       );
-
       localStorage.clear();
-
       setToken(null);
-      navigate("/");
-      console.log("Logout response:", response);
-
       if (response.status === 200) {
+        navigate("/");
         toast.info(response.data.message);
       } else {
         toast.error(response.data.message);
@@ -62,6 +62,7 @@ const Header = () => {
     } catch (error) {
       console.error("Logout error:", error);
     }
+    
   };
   return (
     <>
@@ -193,32 +194,31 @@ const Header = () => {
             id="dropdownDelay"
             className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
           >
-           
-             
-              {token ? (
-                ""
-              ) : (
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownDelayButton">
-                  <li>
-                    <Link
-                      to={"/login"}
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to={"/register"}
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Register
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            
+            {token ? (
+              ""
+            ) : (
+              <ul
+                className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownDelayButton"
+              >
+                <li>
+                  <Link
+                    to={"/login"}
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/register"}
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
 
           <Link

@@ -49,9 +49,7 @@ const DetailProduct = () => {
     };
     getDetailProduct();
   }, [id]);
-
   axios.defaults.withCredentials = true;
-
   const handleAddToCart = async (pid, pname) => {
     try {
       const token = localStorage.getItem("token");
@@ -75,7 +73,7 @@ const DetailProduct = () => {
         );
         if (response) {
           toast.success(response.data.message);
-          navigate('/cart')
+          navigate("/cart");
         }
       } else {
         navigate("/login");
@@ -250,10 +248,12 @@ const DetailProduct = () => {
                     <FontAwesomeIcon icon={faCartShopping} className="pr-3" />{" "}
                     ADD TO CART
                   </button>
-                  <button className="p-2 ml-5 rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-300 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-500 "
-                  onClick={() => {
-                    handleAddToCart(product.id, product.pname);
-                  }}>
+                  <button
+                    className="p-2 ml-5 rounded-lg text-white bg-gradient-to-r from-orange-500 to-orange-300 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-300 hover:to-orange-500 "
+                    onClick={() => {
+                      handleAddToCart(product.id, product.pname);
+                    }}
+                  >
                     <FontAwesomeIcon icon={faBoltLightning} className="pr-3" />
                     BUY NOW
                   </button>
