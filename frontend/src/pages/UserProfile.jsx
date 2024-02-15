@@ -123,7 +123,7 @@ const UserProfile = () => {
               <h1
                 className="pt-3 pb-2 pl-3 text-gray-400 hover:text-orange-400 cursor-pointer hover:underline text-lg"
                 onClick={() => {
-                  handleOnclick("cancled");
+                  handleOnclick("cancel");
                 }}
               >
                 Canceled
@@ -173,7 +173,7 @@ const UserProfile = () => {
                           <span>{item.date}</span>
                         </div>
                       </Link>
-                      {item.status === "cancled" && (
+                      {item.status === "cancel" && (
                         <button
                           className="bg-red-500 text-white p-1 rounded-lg "
                           onClick={() => {
@@ -185,7 +185,7 @@ const UserProfile = () => {
                         </button>
                       )}
                       {item.status !== "dispatched" &&
-                        item.status !== "cancled" &&
+                        item.status !== "cancel" &&
                         item.status !== "delivered" && (
                           <>
                             <Modal id={item.id} order_id={item.order_id} />
