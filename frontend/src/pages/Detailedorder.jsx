@@ -11,12 +11,14 @@ import { Link, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 const Detailedorder = () => {
   const { id } = useParams();
   const url = "http://127.0.0.1:8000/";
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const customername = useSelector((state)=>state.customer);
+  const customername = useSelector((state) => state.customer);
   useEffect(() => {
     if (!localStorage.getItem("id") || !localStorage.getItem("token")) {
       navigate("/login");
@@ -39,6 +41,102 @@ const Detailedorder = () => {
       }
     }
   }, [localStorage.getItem("id"), localStorage.getItem("token")]);
+
+  const downloadInvoice = () => {
+    const doc = new jsPDF({
+      unit: "pt",
+      format: [595, 842],
+      orientation: "portrait",
+    });
+
+    const font = '"Roboto", sans-serif';
+    const logo = "/images/Wooden_Street-Logo.wine.png";
+
+    doc.addImage(logo, "png", 10, 10, 40, 40, undefined, "FAST");
+    doc.setFont(font);
+
+    let startY = 50;
+
+    data.forEach((item) => {
+      doc.setFontSize(16);
+      doc.text("Order Invoice", 250, startY, { align: "center" });
+      doc.setLineWidth(0.5);
+      doc.line(100, startY + 10, 500, startY + 10); // Underline below the heading
+
+      doc.setFontSize(12);
+      doc.text("Wooden Stores", 100, startY + 40, { align: "left" });
+      doc.text("No 12  DubaiStreet, Abudabi, Dubai", 100, startY + 60, {
+        align: "left",
+      });
+
+      const productsData = [["", item.product.pname, item.product.price]];
+
+      const productTable = doc.autoTable({
+        startY: startY + 90,
+        head: [["Image", "Product Name", "Price"]],
+        body: productsData,
+        theme: "striped",
+        styles: {
+          fontSize: 10,
+          margin: { top: 5, bottom: 5 },
+          padding: { top: 2, bottom: 2 },
+        },
+        didDrawCell: (data) => {
+          if (data.column.index === 0 && data.cell.section === "body") {
+            const imageSize = 40;
+            doc.addImage(
+              url + item.product.img1,
+              "JPEG",
+              data.cell.x + 2,
+              data.cell.y + 2,
+              imageSize,
+              imageSize,
+              undefined,
+              "FAST",
+              function (success) {
+                if (!success) {
+                  console.error("Failed to load image:", item.product.img1);
+                }
+              }
+            );
+          }
+        },
+      });
+
+      startY = productTable.lastAutoTable.finalY + 30;
+
+      const customerData = [
+        ["Customer Name", customername],
+        ["Address", item.address.address],
+      ];
+
+      const customerTable = doc.autoTable({
+        startY: startY,
+        body: customerData,
+        theme: "striped",
+        styles: {
+          fontSize: 10,
+          margin: { top: 5, bottom: 5 },
+          padding: { top: 2, bottom: 2 },
+        },
+      });
+      startY = customerTable.lastAutoTable.finalY + 30;
+      doc.text("Total:", 470, startY);
+      doc.text(`${item.total}`, 550, startY, { align: "right" });
+      startY += 30;
+      const footerText = `${
+        item.order_id
+      } | Generated on ${new Date().toLocaleString()}`;
+      const footer = doc.splitTextToSize(footerText, 500);
+      doc.text(footer, 10, doc.internal.pageSize.getHeight() - 20, {
+        align: "left",
+      });
+
+      doc.save(`order_invoice_${item.id}.pdf`);
+
+      doc.setPage(1);
+    });
+  };
 
   return (
     <>
@@ -117,7 +215,7 @@ const Detailedorder = () => {
                   </small>
                 </div>
                 <div className="pt-3 pb-3  pr-4">
-                  <h1 className="text-xl ">
+                  <h1 className="text-xl cursor-pointer ">
                     Download
                     <FontAwesomeIcon
                       icon={faDownload}
@@ -128,7 +226,10 @@ const Detailedorder = () => {
                     <p className="text-sm pt-2 text-justify">
                       Download Invoice
                     </p>
-                    <button className="border p-2 bg-blue-500 text-white rounded-md hover:bg-orange-400">
+                    <button
+                      className="border p-2 bg-blue-500 text-white rounded-md hover:bg-orange-400"
+                      onClick={downloadInvoice}
+                    >
                       Download
                     </button>
                   </div>
