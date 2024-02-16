@@ -28,8 +28,6 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-     # third part middleware
+    # third part middleware
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
@@ -58,13 +56,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-   
+
 ]
 CORS_ALLOWED_ORIGINS = [
-   "http://localhost:5173"
+    "http://localhost:5173"
 ]
 CSRF_USE_SESSIONS = True
-CSRF_COOKIE_SECURE = True 
+CSRF_COOKIE_SECURE = True
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -95,10 +93,10 @@ DATABASES = {
         'ENGINE': 'djongo',
         'CLIENT': {
             'host': 'mongodb+srv://vajay4834:1234@django-clusture.yxzxtju.mongodb.net/?retryWrites=true&w=majority',
-            'username':'vajay4834',
+            'username': 'vajay4834',
             'password': '1234',
         },
-        'NAME': 'WoodenStore',# Change this to the new database name
+        'NAME': 'WoodenStore',  # Change this to the new database name
         # change in model also add djongo
     }
 }
@@ -111,7 +109,6 @@ REST_FRAMEWORK = {
     ],
     # ... other settings
 }
-
 
 
 # Password validation
@@ -159,3 +156,8 @@ MEDIA_ROOT = 'static/img'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# RAZOR PAY
+
+RAZORPPAY_KEY_ID = config('RAZORPPAY_KEY_ID')
+RAZORPPAY_KEY_SECRET = config('RAZORPPAY_KEY_SECRET')

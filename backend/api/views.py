@@ -17,6 +17,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import rotate_token
 from rest_framework.generics import get_object_or_404
 from .Uniquecode import generate_unique_id
+from .razorpay.razorpayserializer import CreateRazorpay
+from .razorpay.main import RazorpayClient
+rz_client = RazorpayClient()
 
 
 @api_view(['GET'])
@@ -88,7 +91,7 @@ class LoginView(APIView):
                 "status": status.HTTP_200_OK,
                 "token": token.key,
                 "id": user.id,
-                "username":username
+                "username": username
             })
         else:
             return Response({
@@ -376,3 +379,27 @@ class CancelOrderView(APIView):
                 }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(str(e))
+
+
+class RazorpayOrder(APIView):
+    def post(self, request):
+        try:
+            response = CreateRazorpay(data=request.data)
+            if response.is_valid():
+                order_res = rz_client.create_order(
+                    amount=response.validated_data.get("amount"),
+                    currency=response.validated_data.get("currency")
+                )
+                return Response({
+                    "message": "order created",
+                    "data": order_res
+                })
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": response.errors
+                })
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
