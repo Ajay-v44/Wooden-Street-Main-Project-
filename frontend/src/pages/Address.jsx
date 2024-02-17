@@ -5,9 +5,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Notification from "../components/Notification";
+import useRazorpay from "react-razorpay";
 
 const Address = () => {
   const navigate = useNavigate();
+  const [Razorpay] = useRazorpay();
   const { totaloffer, totalprice, todaydeal } = useParams();
   const [method, setMethod] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -147,6 +149,41 @@ const Address = () => {
       }
     }
   };
+
+  const handlePayment = async (
+    razorpay_payment_id,
+    razorpay_order_id,
+    razorpay_signature
+  ) => {
+    setLoading(true);
+    const response = await axios.post(
+      "/api/order/",
+      {
+        cart: 0,
+        user: localStorage.getItem("id"),
+        address: data.id,
+        total: Number(totalprice) - Number(todaydeal),
+        mode: "online",
+      },
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      }
+    );
+    const payment_response = await axios.post("/api/razorpay/complete/", {
+      amount: Number(totalprice) - Number(todaydeal),
+      order_id: razorpay_order_id,
+      payment_id: razorpay_payment_id,
+      signature: razorpay_signature,
+    });
+    toast.success(payment_response.data.message);
+    setLoading(false);
+    navigate("/cart");
+    return payment_response;
+  };
+
   const handleOrder = async () => {
     try {
       if (
@@ -170,6 +207,7 @@ const Address = () => {
               user: localStorage.getItem("id"),
               address: data.id,
               total: Number(totalprice) - Number(todaydeal),
+              mode: "cod",
             },
             {
               headers: {
@@ -182,9 +220,61 @@ const Address = () => {
           toast.success(response.data.message);
           navigate("/userprofile");
           <Notification message={response.data.message} />;
-        }
-        else{
-        
+        } else {
+          setLoading(true);
+          const response = await axios.post("/api/razorpay/create/", {
+            amount: Number(totalprice) - Number(todaydeal),
+            currency: "INR",
+          });
+          const order_id = response.data.data.id;
+
+          // razorpay code
+
+          const options = {
+            key: import.meta.env.VITE_RAZORPPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+            name: "Wooden Street",
+            description: "Wooden Street Furnitures",
+            image: "/images/Wooden_Street-Logo.wine.png",
+            order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
+            handler: function (response) {
+              toast.success(
+                handlePayment(
+                  response.razorpay_payment_id,
+                  response.razorpay_order_id,
+                  response.razorpay_signature
+                )
+              );
+              // alert(response.razorpay_payment_id);
+              // alert(response.razorpay_order_id);
+              // alert(response.razorpay_signature);
+            },
+            prefill: {
+              name: "Piyush Garg",
+              email: "youremail@example.com",
+              contact: "9999999999",
+            },
+            notes: {
+              address: "Razorpay Corporate Office",
+            },
+            theme: {
+              color: "#f3ca2b",
+            },
+          };
+          const rzp1 = new Razorpay(options);
+          rzp1.on("payment.failed", function (response) {
+            toast.error("payment failed try again");
+            // alert(response.error.code);
+            // alert(response.error.description);
+            // alert(response.error.source);
+            // alert(response.error.step);
+            // alert(response.error.reason);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
+          });
+          rzp1.open();
+          // end razorpay code
+
+          setLoading(false);
         }
       }
     } catch (error) {

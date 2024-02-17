@@ -4,7 +4,7 @@ from .import client
 class RazorpayClient:
     def create_order(self, amount, currency):
         data = {
-            "amount": amount,
+            "amount": amount *100,
             "currency": "INR"
         }
         try:

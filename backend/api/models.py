@@ -97,6 +97,7 @@ class Order(models.Model):
     address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
     total = models.IntegerField()
     date = models.DateField(auto_now=True)
+    mode=models.CharField(max_length=150,default="cod")
     status = models.CharField(max_length=50, default='confirmed')
 
     def __str__(self):
@@ -131,13 +132,15 @@ class Transaction(models.Model):
     payment_id = models.CharField(max_length=150)
     order_id = models.CharField(max_length=150)
     signature = models.CharField(max_length=150)
-    amount=models.IntegerField()
-    datetime=models.DateTimeField(auto_now_add=True)
+    amount = models.IntegerField()
+    datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.payment_id
+
+
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'payment_id','amount')
-    search_fields = ['order_id','amount']
-    list_filter = ['order_id','amount']  
+    list_display = ('order_id', 'payment_id', 'amount')
+    search_fields = ['order_id', 'amount']
+    list_filter = ['order_id', 'amount']

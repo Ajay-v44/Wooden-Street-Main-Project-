@@ -133,7 +133,7 @@ const UserProfile = () => {
               {data.length > 0 ? (
                 <>
                   {data?.map((item) => (
-                    <div>
+                    <div className="w-auto  md:w-[50rem]">
                       {/* cards */}
                       <Link
                         to={`/detailorder/${item.id}`}
@@ -142,7 +142,7 @@ const UserProfile = () => {
                         <img
                           src={url + item.product.img1}
                           alt=""
-                          className="w-32 md:w-52"
+                          className="w-32 md:w-52 "
                         />
                         <div>
                           <h1 className="capitalize text-sm font-semibold">

@@ -271,6 +271,7 @@ class OrderView(APIView):
             data = request.data
             user_id = data.get("user")
             address_id = data.get("address")
+            mode = data.get("mode")
             total = data.get("total", 0)
             oid = generate_unique_id()
             cart = Cart.objects.filter(user=user_id)
@@ -283,7 +284,8 @@ class OrderView(APIView):
                     address=address,
                     product=item.product,
                     total=total,
-                    order_id=oid
+                    order_id=oid,
+                    mode=mode
                 )
                 orders.append(order)
             return Response({
@@ -411,11 +413,11 @@ class Transaction(APIView):
             serializer = TransactionSerializer(data=request.data)
             if serializer.is_valid():
                 rz_client.verify_payment(
-                    razorpay_order_id=TransactionSerializer.validated_data.get(
+                    razorpay_order_id=serializer.validated_data.get(
                         "order_id"),
-                    razorpay_payment_id=TransactionSerializer.validated_data.get(
+                    razorpay_payment_id=serializer.validated_data.get(
                         "payment_id"),
-                    razorpay_signature=TransactionSerializer.validated_data.get(
+                    razorpay_signature=serializer.validated_data.get(
                         "signature")
                 )
                 serializer.save()
