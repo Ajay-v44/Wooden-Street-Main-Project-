@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.middleware.csrf import rotate_token
 from rest_framework.generics import get_object_or_404
 from .Uniquecode import generate_unique_id
-from .razorpay.razorpayserializer import CreateRazorpay
+from .razorpay.razorpayserializer import CreateRazorpay, TransactionSerializer
 from .razorpay.main import RazorpayClient
 rz_client = RazorpayClient()
 
@@ -399,6 +399,33 @@ class RazorpayOrder(APIView):
                     "status": status.HTTP_400_BAD_REQUEST,
                     "message": response.errors
                 })
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Transaction(APIView):
+    def post(self, request):
+        try:
+            serializer = TransactionSerializer(data=request.data)
+            if serializer.is_valid():
+                rz_client.verify_payment(
+                    razorpay_order_id=TransactionSerializer.validated_data.get(
+                        "order_id"),
+                    razorpay_payment_id=TransactionSerializer.validated_data.get(
+                        "payment_id"),
+                    razorpay_signature=TransactionSerializer.validated_data.get(
+                        "signature")
+                )
+                serializer.save()
+                return Response({
+                    "message": "Success,transaction created"
+                }, status=status.HTTP_201_CREATED)
+            else:
+                return Response({
+                    "message": serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({
                 "message": str(e)

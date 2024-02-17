@@ -92,7 +92,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
 
 class Order(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    order_id=models.CharField(max_length=150)
+    order_id = models.CharField(max_length=150)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
     total = models.IntegerField()
@@ -106,9 +106,9 @@ class Order(models.Model):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'product_id',  'address_id',
-                    'total', 'date', 'status','order_id')
-    search_fields = ['date', 'status','order_id']
-    list_filter = ['date', 'status','order_id']
+                    'total', 'date', 'status', 'order_id')
+    search_fields = ['date', 'status', 'order_id']
+    list_filter = ['date', 'status', 'order_id']
     list_editable = ['status']
     formfield_overrides = {
         models.CharField: {'widget': forms.Select(choices=[('dispatched', 'dispatched'), ('delivered', 'delivered'), ('cancel', 'cancled')])},
@@ -125,3 +125,19 @@ class CancelItemAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'reason')
     search_fields = ['order_id']
     list_filter = ['order_id']
+
+
+class Transaction(models.Model):
+    payment_id = models.CharField(max_length=150)
+    order_id = models.CharField(max_length=150)
+    signature = models.CharField(max_length=150)
+    amount=models.IntegerField()
+    datetime=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.payment_id
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ('order_id', 'payment_id','amount')
+    search_fields = ['order_id','amount']
+    list_filter = ['order_id','amount']  
