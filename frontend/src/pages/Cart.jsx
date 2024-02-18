@@ -20,6 +20,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [cartleng, setCartleng] = useState(null);
   const [loading, setLoading] = useState(false);
+  const quantity = 1;
   useEffect(() => {
     if (!token || !id) {
       navigate("/login");
@@ -55,7 +56,7 @@ const Cart = () => {
       0
     )
   );
-  
+
   const averageOfferPercent = Math.floor(totalOffers / cartItems[0]?.length);
   const totalPrice = cartItems[0]?.reduce(
     (tprice, item) => tprice + item.price,
@@ -63,11 +64,11 @@ const Cart = () => {
   );
   const todaysDeal = 2000;
 
-  const states={
-    "totaloffer":totalOffers,
-    "totalprice":totalPrice,
-    "todaydeal":todaysDeal
-  }
+  const states = {
+    totaloffer: totalOffers,
+    totalprice: totalPrice,
+    todaydeal: todaysDeal,
+  };
   const removeCartItems = async (id) => {
     try {
       const response = await axios.delete(`/api/cart/${id}`, {
@@ -87,6 +88,20 @@ const Cart = () => {
     } catch (error) {
       console.log("error");
       toast.error("Erroro Occured ! Try Again");
+    }
+  };
+  const handleQuantity = async (val) => {
+    if (quantity <= 1) {
+      toast.warning("minimum quantity reached");
+    } else if (quantity >= 10) {
+      toast.warning("maximum quantity reached");
+    } else {
+      if (val === "desc") {
+        quantity -= 1;
+      }
+      if (val === "inc") {
+        quantity += 1;
+      }
     }
   };
   return (
@@ -209,11 +224,21 @@ const Cart = () => {
                               <div className="flex items-center">
                                 Quantity
                                 <div className="border flex ml-2">
-                                  <div className="cursor-pointer border-r px-2">
+                                  <div
+                                    className="cursor-pointer border-r px-2"
+                                    onClick={() => {
+                                      handleQuantity(dec);
+                                    }}
+                                  >
                                     <FontAwesomeIcon icon={faSubtract} />
                                   </div>
-                                  <div className="px-4">{item.qty}</div>
-                                  <div className="cursor-pointer border-l px-2">
+                                  <div className="px-4">{quantity}</div>
+                                  <div
+                                    className="cursor-pointer border-l px-2"
+                                    onClick={() => {
+                                      handleQuantity(inc);
+                                    }}
+                                  >
                                     <FontAwesomeIcon icon={faPlus} />
                                   </div>
                                 </div>
@@ -282,10 +307,11 @@ const Cart = () => {
                         </small>
                       </span>
                     </p>
-                    <Link className="flex justify-center items-center mt-5" to={`/address/${averageOfferPercent}/${totalPrice}/${todaysDeal}`}>
-
-
-                    {/* <Link className="flex justify-center items-center mt-5" to={{pathname:'/address',state:{states}}}> */}
+                    <Link
+                      className="flex justify-center items-center mt-5"
+                      to={`/address/${averageOfferPercent}/${totalPrice}/${todaysDeal}`}
+                    >
+                      {/* <Link className="flex justify-center items-center mt-5" to={{pathname:'/address',state:{states}}}> */}
                       <button className="p-2 rounded-lg text-white bg-gradient-to-r from-orange-300 to-orange-500 w-60 h-14 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-300 ">
                         <FontAwesomeIcon icon={faBuyNLarge} className="pr-3" />{" "}
                         Continue
