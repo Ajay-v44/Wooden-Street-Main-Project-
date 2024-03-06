@@ -19,10 +19,11 @@ import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { logout } from "../slices/Customerslice";
 const Header = () => {
   const navigate = useNavigate();
+  const [searchItem, setSearchItem] = useState(null);
   const [token, setToken] = useState(null);
   const [cartNumber, setCartNumber] = useState(0);
   const dispatch = useDispatch();
@@ -62,7 +63,6 @@ const Header = () => {
     } catch (error) {
       console.error("Logout error:", error);
     }
-    
   };
   return (
     <>
@@ -129,11 +129,17 @@ const Header = () => {
               <input
                 type="search"
                 id="search-dropdown"
+                onChange={(e) => setSearchItem(e.target.value)}
+                value={searchItem}
                 className="block p-2.5  z-20 text-sm text-gray-100 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 rounded-l-md w-[15rem] md:w-[25rem]"
                 placeholder="Search Products..."
                 required
               />
-              <button
+              <Link
+                to={`/products/${searchItem}`}
+                onClick={()=>{
+                  setSearchItem(null)
+                }}
                 type="submit"
                 className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-orange-400 rounded-e-lg border   focus:ring-4 focus:outline-none focus:ring-blue-300"
               >
@@ -153,7 +159,7 @@ const Header = () => {
                   />
                 </svg>
                 <span className="sr-only">Search</span>
-              </button>
+              </Link>
             </div>
           </div>
         </form>
