@@ -26,5 +26,7 @@ urlpatterns = [
     # razor pay
     path('razorpay/create/', RazorpayOrder.as_view(), name='razorpay'),
     path('razorpay/complete/', Transaction.as_view(), name='razorpaycomplete'),
+    # contact us
+    path('contactus/', ContactUsPage.as_view(), name='contactus')
 
 ]

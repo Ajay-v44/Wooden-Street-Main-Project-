@@ -98,3 +98,9 @@ class CancelItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CancelItem
         fields = "__all__"
+
+
+class ContactUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contactus
+        fields = "__all__"

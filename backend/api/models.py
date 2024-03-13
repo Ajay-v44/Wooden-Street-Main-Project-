@@ -97,7 +97,7 @@ class Order(models.Model):
     address = models.ForeignKey(DeliveryAddress, on_delete=models.CASCADE)
     total = models.IntegerField()
     date = models.DateField(auto_now=True)
-    mode=models.CharField(max_length=150,default="cod")
+    mode = models.CharField(max_length=150, default="cod")
     status = models.CharField(max_length=50, default='confirmed')
 
     def __str__(self):
@@ -144,3 +144,20 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'payment_id', 'amount')
     search_fields = ['order_id', 'amount']
     list_filter = ['order_id', 'amount']
+
+
+class Contactus(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254)
+    mob = models.BigIntegerField()
+    reason = models.TextField()
+    img = models.ImageField(upload_to='contactus',null=True,blank=True)
+    message = models.TextField()
+    date = models.DateField(auto_now=True)
+
+
+@admin.register(Contactus)
+class ContactusAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'mob', 'reason', 'img', 'message', 'date')
+    search_fields = ['email']
+    list_filter = ['date']
