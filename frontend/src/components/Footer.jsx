@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faFacebook, faInstagram, faXTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className="mt-10">
@@ -187,7 +188,7 @@ const Footer = () => {
               <h4 className="text-lg">NEED HELP</h4>
               <ul className="cursor-pointer pt-5">
                 <li className="hover:text-orange-300">Help Center</li>
-                <li className="hover:text-orange-300">Contact Us</li>
+                <Link to={'/contactus'} className="hover:text-orange-300">Contact Us</Link>
                 <li className="hover:text-orange-300"> Ask Experts</li>
                 <li className="hover:text-orange-300">Track yor Order</li>
               </ul>

@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import Address from "./pages/Address";
 import Detailedorder from "./pages/Detailedorder";
+import Contactus from "./pages/Contactus";
 function App() {
   return (
     <BrowserRouter>
@@ -47,6 +48,7 @@ function App() {
           element={<Address />}
         />
         <Route path="/detailorder/:id" element={<Detailedorder />} />
+        <Route path="/contactus" element={<Contactus/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>
