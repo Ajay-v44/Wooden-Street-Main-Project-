@@ -19,6 +19,7 @@ from rest_framework.generics import get_object_or_404
 from .Uniquecode import generate_unique_id
 from .razorpay.razorpayserializer import CreateRazorpay, TransactionSerializer
 from .razorpay.main import RazorpayClient
+from rest_framework.parsers import MultiPartParser, FormParser
 rz_client = RazorpayClient()
 
 
@@ -435,6 +436,7 @@ class Transaction(APIView):
 
 
 class ContactUsPage(APIView):
+    parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
         try:
             serializer = ContactUsSerializer(data=request.data)

@@ -24,24 +24,22 @@ const Contactus = () => {
   const handleOnSubmit = async (e) => {
     try {
       e.preventDefault();
-      setBtnval(" SUBMITING YOUR REQUEST...")
-      console.log(values);
-      const response = await axios.post(
-        "/api/contactus/",
-        {
-          name: values.name,
-          email: values.email,
-          mob: values.mob,
-          reason: values.reason,
-          //   img: values.img,
-          message: values.message,
+      setBtnval(" SUBMITING YOUR REQUEST...");
+  
+      const formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('email', values.email);
+      formData.append('mob', values.mob);
+      formData.append('reason', values.reason);
+      formData.append('img', e.target.img.files[0]); // Assuming values.img is the File object
+      formData.append('message', values.message);
+  console.log(values.img)
+      const response = await axios.post("/api/contactus/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      });
+  
       setValues({
         name: "",
         email: "",
@@ -50,8 +48,9 @@ const Contactus = () => {
         img: "",
         message: "",
       });
-      setBtnval(" SUBMITED YOUR REQUEST")
-
+  
+      setBtnval(" SUBMITED YOUR REQUEST");
+  
       console.log(response);
       if (response.status === 201) {
         toast.success(response.data.message);
@@ -59,10 +58,13 @@ const Contactus = () => {
         toast.warning(response.data.message);
       }
     } catch (error) {
+      setBtnval(" FAILED...");
+  
       console.log(error);
       toast.error("Something went wrong");
     }
   };
+  
   return (
     <div className="p-10 bg-gray-100 flex justify-center items-center">
       <div className=" bg-white border w-auto md:w-1/2 ">
@@ -145,6 +147,7 @@ const Contactus = () => {
             <p className="text-bold text-lg md:text-xl">Upload File </p>
             <input
               type="file"
+              accept="image/jpeg,image/png,image/gif"
               value={values.img}
               onChange={handleOnChange}
               className="w-auto md:w-80 rounded-md border border-gray-300 ml-2"

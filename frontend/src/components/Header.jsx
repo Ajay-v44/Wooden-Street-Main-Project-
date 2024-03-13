@@ -98,9 +98,9 @@ const Header = () => {
             <span className="pl-2 pr-2">|</span>
             <span className=" cursor-pointer">
               <FontAwesomeIcon icon={faCircleQuestion} className="" />
-              <span className="font-light hover:text-orange-500 pl-2 ">
+              <Link to={'/contactus'} className="font-light hover:text-orange-500 pl-2 ">
                 Help Center
-              </span>
+              </Link>
             </span>
           </div>
         </div>
