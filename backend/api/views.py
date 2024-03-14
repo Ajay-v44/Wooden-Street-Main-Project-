@@ -437,6 +437,7 @@ class Transaction(APIView):
 
 class ContactUsPage(APIView):
     parser_classes = [MultiPartParser, FormParser]
+
     def post(self, request):
         try:
             serializer = ContactUsSerializer(data=request.data)
@@ -447,9 +448,30 @@ class ContactUsPage(APIView):
                 }, status=status.HTTP_201_CREATED)
             else:
                 return Response({
-                    'message':serializer.errors
-                },status=status.HTTP_404_NOT_FOUND)
+                    'message': serializer.errors
+                }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({
                 "message": str(e)
             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReviewOurSite(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            serializer = ReviewSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "message": "Thankyou For Your Response"
+                }, status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response({
+                    "message": serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_404_NOT_FOUND)

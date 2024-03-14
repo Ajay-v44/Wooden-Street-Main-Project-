@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django.core.validators import MaxValueValidator
+from django.utils.translation import gettext as _
 from django import forms
 # Create your models here.
 
@@ -161,3 +162,15 @@ class ContactusAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'mob', 'reason', 'img', 'message', 'date')
     search_fields = ['email']
     list_filter = ['date']
+
+class ReviewSite(models.Model):
+    name=models.CharField( max_length=50)
+    place=models.CharField(_("Place"), max_length=50)
+    review=models.TextField()
+    img=models.ImageField(_("Image"), upload_to='review',null=True,blank=True)
+    rating=models.FloatField()
+@admin.register(ReviewSite)
+class RateProductAdmin(admin.ModelAdmin):
+    list_display=('name','place','review','img','rating')
+    search_fields=['rating','place']
+    list_filter=['rating','place']

@@ -99,8 +99,16 @@ class CancelItemSerializer(serializers.ModelSerializer):
         model = CancelItem
         fields = "__all__"
 
+
 class ContactUsSerializer(serializers.ModelSerializer):
     img = serializers.ImageField(required=False)
+
     class Meta:
         model = Contactus
         fields = ['name', 'email', 'mob', 'reason', 'img', 'message', 'date']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewSite
+        fields = "__all__"
